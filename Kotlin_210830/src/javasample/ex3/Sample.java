@@ -2,6 +2,7 @@ package javasample.ex3;
 
 import java.util.Objects;
 
+// class User extends Object {
 class User {
     private String name;
     private int age;
