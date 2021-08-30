@@ -1,6 +1,9 @@
 // 06_프로퍼티.kt
 package ex6
 
+import javasample.ex6.User as JUser
+// 새로운 이름을 부여해서, 이름 충돌을 해결할 수 있습니다.
+
 // 프로퍼티
 // => 접근자 메소드를 자동으로 생성하는 문법
 // : 코틀린은 필드를 생성하는 문법을 제공하지 않습니다.
@@ -38,11 +41,13 @@ class Person(var firstName: String, var lastName: String) {
     // val: getter
     // > 별도의 초기화를 제공할 필요가 없습니다.
     var fullName: String
+        // getFullName
         get() {
             // field 키워드도 사용하면 안됩니다.
             //  > field 키워드는 Backing Field가 있는 프로퍼티로 만듭니다.
             return "$firstName $lastName"
         }
+        // setFullName
         set(value) {
             val arr = value.split(" ")
             firstName = arr[0]
@@ -52,6 +57,16 @@ class Person(var firstName: String, var lastName: String) {
 
 
 fun main() {
+    // val user1 = javasample.ex6.User("Tom", 42)
+    val user1 = JUser("Tom", 42)
+    println(user1.age)
+    user1.name = "Bob"
+    println(user1.name)
+
+    val user = User("Tom", 42)
+    user.name = "Bob"    // Setter
+    println(user.name)   // Getter
+
     val person = Person("Gildong", "Hong")
     person.lastName = "Kim"
     person.fullName = "Soonshin Lee"
@@ -61,11 +76,6 @@ fun main() {
     println(person.fullName)
 
 
-    val user = User("Tom", 42)
-    // user.age = 100
-
-    user.name = "Bob"    // Setter
-    println(user.name)   // Getter
 }
 
 
