@@ -28,9 +28,10 @@ interface Clickable {
 // 2. 인터페이스와 추상 클래스의 차이점
 //   > 추상 클래스는 필드와 메소드를 동시에 제공할 수 있습니다.
 //   > 인터페이스는 메소드에 대한 기본 구현만 제공할 수 있습니다.
-
-
 // class Button implements Button {}
+
+
+
 /*
 class Person {
     private String name;
@@ -58,7 +59,29 @@ class Person {
     }
 }
 
-class Button : Clickable {
+// 3. 코틀린도 다중 상속은 제공하지 않습니다.
+//    여러 개의 인터페이스를 구현하는 것은 가능합니다.
+//   => 만약 구현하는 인터페이스들이 동일한 기본 구현을 제공하고 있다면,
+//      모호성 오류가 발생합니다.
+//    > 반드시 해당 기능을 오버라이딩 해야 합니다.
+interface Focusable {
+    fun focus()
+
+    fun showOff() {
+        println("Focusable")
+    }
+}
+
+class Button : Clickable, Focusable {
+    override fun showOff() {
+        super<Clickable>.showOff()   // 기본 구현을 사용하는 방법
+        super<Focusable>.showOff()
+    }
+
+    override fun focus() {
+        println("Button focus")
+    }
+
     // override var name: String = "Tom"  // Backing Field가 있는 프로퍼티
     override var name: String             // Backing Field가 없는 프로퍼티
         get() {
