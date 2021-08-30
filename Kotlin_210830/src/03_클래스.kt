@@ -56,13 +56,12 @@ class User constructor(private var name: String,
 //   Java: User user = new User(...);
 // Kotlin: var user: User = User(...);
 
-// constructor 라는 키워드도 생략 가능합니다.
-
 // 6. @Override -> override
 //    Object    -> Any
 //  instanceOf  -> is / !is
 //  User other = (User)obj   ->  other as User
 
+// constructor 라는 키워드도 생략 가능합니다.
 class User(
     private var name: String,
     private var age: Int

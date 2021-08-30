@@ -77,13 +77,6 @@ fun main() {
     val a: Long = n.toLong()
 }
 
-/*
-internal interface State : Serializable
-internal interface View {
-    var state: State?
-}
-*/
-
 
 
 
