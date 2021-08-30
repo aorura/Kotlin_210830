@@ -36,10 +36,17 @@ class Person(var firstName: String, var lastName: String) {
     // => 별도의 메모리 공간을 차지 않는다.
     // var: getter + setter
     // val: getter
-
-    val fullName: String
+    // > 별도의 초기화를 제공할 필요가 없습니다.
+    var fullName: String
         get() {
+            // field 키워드도 사용하면 안됩니다.
+            //  > field 키워드는 Backing Field가 있는 프로퍼티로 만듭니다.
             return "$firstName $lastName"
+        }
+        set(value) {
+            val arr = value.split(" ")
+            firstName = arr[0]
+            lastName = arr[1]
         }
 }
 
@@ -47,6 +54,7 @@ class Person(var firstName: String, var lastName: String) {
 fun main() {
     val person = Person("Gildong", "Hong")
     person.lastName = "Kim"
+    person.fullName = "Soonshin Lee"
 
     println("${person.firstName} ${person.lastName}")
     // println(person.getFullName())
