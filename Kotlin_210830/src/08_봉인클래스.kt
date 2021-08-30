@@ -29,7 +29,36 @@ enum class Color(val red: Int, val green: Int, val blue: Int) {
         }
 }
 
+// 2. Kotlin은 switch-case statement(문) 이 제공되지 않습니다.
+//   => when expression(식) 을 제공합니다.
+
+//   Expression vs Statement
+//   => Expression은 결과값이 존재하지만, Statement는 결과가 존재하지 않습니다.
+//   => void -> Unit
+
+//   코틀린에서는 if도 Expression입니다.
+//   => 각 조건에 따른 블록의 마지막 표현식을 통해 결과값이 결정됩니다.
+
 fun main() {
+    var age = 30
+    /*
+    var grade = ""
+    if (age >= 10 && age < 20)  {
+        grade = "통과"
+    } else {
+        grade = "탈락"
+    }
+    */
+
+    val grade = if (age >= 10 && age < 20)
+        "통과"
+    else {
+        "탈락"
+    }
+    println(grade)
+
+
+
     val color = Color.RED
     println(color.rgb())
     println(color.rgb)
