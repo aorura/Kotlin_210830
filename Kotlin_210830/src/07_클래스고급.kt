@@ -54,7 +54,6 @@ abstract class Car(val name: String) {
     // => 오버라이딩 허용
     abstract fun display()
     fun open() {
-
     }
 }
 
