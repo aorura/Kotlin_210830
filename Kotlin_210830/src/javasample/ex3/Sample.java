@@ -44,8 +44,8 @@ class User {
         User other = (User) obj;
 
         // 5. 비교 하고자하는 필드에 대한 비교해서, 같은 객체인지 판단합니다.
-        return other.name.equals(name) &&
-                other.age == age;
+        // return other.name.equals(name) && other.age == age;
+        return Objects.equals(other.name, name) && other.age == age;
     }
 
     @Override
@@ -54,18 +54,20 @@ class User {
     }
 }
 
-
+// Java에서 equals를 사용할 때, 반드시 null 체크를 해야합니다.
+//  => Objects.equals를 이용하면 됩니다.(Java 7)
 public class Sample {
     public static void main(String[] args) {
         User user1 = new User("Tom", 42);
-        User user2 = new User("Tom", 42);
+        User user2 = new User(null, 42);
         // User user2 = user1;
 
         if (user1 == user2) {
             System.out.println("동일한 참조 객체입니다.");
         }
 
-        if (user1.equals(user2)) {
+        // if (user1.equals(user2)) {
+        if (Objects.equals(user1, user2)) {
             System.out.println("동일한 내용의 객체입니다.");
         }
 

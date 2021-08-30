@@ -49,6 +49,7 @@ class User constructor(private var name: String,
 // 2) 객체 동등성
 //   Java: obj1.equals(obj2)
 // Kotlin: obj1 == obj2
+//      - null에 대한 처리가 포함되어 있습니다.
 
 // 5. 객체를 생성하는 방법
 //  : new 연산자를 사용하지 않습니다.
@@ -103,6 +104,7 @@ class User(
 
 fun main() {
     val user1 = User("Tom", 42)
+    // val user1: User? = null;
     val user2 = User("Tom", 42)
     // val user2 = user1
 
