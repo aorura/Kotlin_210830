@@ -23,8 +23,12 @@ package ex7
 //   => open: Soft Keyword
 //      단독으로 사용할 때는 키워드가 아니지만, class랑 사용될 때 키워드가 됩니다.
 
+// 3. 코틀린의 메소드는 기본적으로 오버라이딩이 금지되어 있는 final method 입니다.
+//   => open 키워드를 통해 메소드에 대한 오버라이딩을 허용할 수 있습니다.
+
+/*
 open class Car(val name: String) {
-    fun display() {
+    open fun display() {
         println("Car($name) display")
     }
     fun open() {
@@ -32,11 +36,38 @@ open class Car(val name: String) {
     }
 }
 
-open class Truck(name: String) : Car(name)
-class DumpTruck(name: String) : Truck(name)
+open class Truck(name: String) : Car(name) {
+    override fun display() {
+        println("Truck($name) display")
+    }
+}
+*/
+
+// class DumpTruck(name: String) : Truck(name)
+
+// Car의 객체를 만들 수 없습니다.
+// > 추상 클래스는 인스턴스화가 불가능합니다.
+//  abstract: 상속 허용
+abstract class Car(val name: String) {
+    // 구현을 제공할 필요가 없고, 자식 클래스가 만드시 오버라이딩 하도록 해야 한다.
+    // => abstract method
+    // => 오버라이딩 허용
+    abstract fun display()
+    fun open() {
+
+    }
+}
+
+class Truck(name: String) : Car(name) {
+    override fun display() {
+        println("Truck($name) display")
+    }
+}
+
 
 fun main() {
-
+    val car: Car = Truck("AAA")
+    car.display()
 }
 
 
