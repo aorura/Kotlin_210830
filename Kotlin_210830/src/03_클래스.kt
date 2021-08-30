@@ -1,6 +1,8 @@
 // 03_클래스.kt
 package ex3
 
+import java.util.*
+
 // User.java
 /*
 public class User {
@@ -85,6 +87,10 @@ class User(
         //     추론해줍니다.
         return other.name == name &&
                 other.age == age
+    }
+
+    override fun hashCode(): Int {
+        return Objects.hash(name, age)
     }
 }
 
