@@ -25,6 +25,7 @@ class Car {
     }
 }
 
+/*
 fun main() {
     val car = Car()
 
@@ -53,3 +54,37 @@ fun main() {
 
     car.go(color = 20)
 }
+*/
+
+class User(
+    val name: String,
+    val address: String? = null,
+    val age: Int = 0,
+    val level: Int = 0
+)
+
+// 코틀린에서는 빌더를 굳이 사용할 필요가 없습니다.
+fun main() {
+    val user = User(
+        name = "Tom",
+        address = "Seoul",
+        age = 10,
+        level = 30
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
