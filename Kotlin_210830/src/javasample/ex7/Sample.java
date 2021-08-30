@@ -39,7 +39,7 @@ class Button implements View {
     //  : 내부 클래스는 자신을 감싸는 외부 클래스의 객체의 참조를 암묵적으로 소유합니다.
     //    - 메모리 누수 등의 다양한 문제의 원인이 됩니다.
     //    - 의도한 경우가 아니면, 내부 클래스가 아닌 중첩 클래스를 통해 설계를 해야 합니다.
-    private static class ButtonState implements State {
+    private class ButtonState implements State {
         private int x;
         private int y;
         private int width;
@@ -100,21 +100,23 @@ public class Sample {
     }
 
     public static void main(String[] args) throws Exception {
+        /*
         // 2. 복원
         State state = loadStateFromFile();
         Button button = new Button();
         button.setState(state);
 
         System.out.println(button);
+        */
 
-        /*
+
         // 1. 저장
         Button button = new Button();
         button.foo();
 
         State state = button.getState();
         saveStateToFile(state);
-        */
+
     }
 }
 
