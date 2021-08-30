@@ -1,15 +1,29 @@
 // 08_봉인클래스2.kt
 package ex8_2
 
-open class Expr
-class Num(val value: Int): Expr()
-class Sum(val left: Expr, val right: Expr): Expr()
+// open class Expr
+sealed class Expr
+
+class Num(val value: Int) : Expr()
+class Sum(val left: Expr, val right: Expr) : Expr()
+class Diff(val left: Expr, val right: Expr): Expr()
+
+// 1. Expr이 open이기 때문에, 누구나 새로운 클래스를 상속 받을 수 있습니다.
+//  => else 구문이 필요합니다.
+// 2. 새로운 클래스가 추가되어도, eval의 코드가 제대로 동작하기 위해서는
+//    반드시 수정이 필요합니다.
+
+// 봉인 클래스(sealed class)를 통해 위의 문제를 해결할 수 있습니다.
+//  : 봉인 클래스에 대한 하위 클래스를 같은 파일에서만 작성할 수 있습니다.
+//   > 컴파일러는 봉인 클래스에 대한 하위 클래스가 정확히 몇개 존재하는지, 어떤 타입인지 알 수 있습니다.
 
 fun eval(e: Expr): Int {
-    return when(e) {
+    return when (e) {
         is Num -> e.value
         is Sum -> eval(e.left) + eval(e.right)
-        else -> throw IllegalStateException("Unknown expression")
+        is Diff -> eval(e.left) - eval(e.right)
+        // 봉인 클래스를 사용할 경우, else 구문을 사용하지 않는 것이 좋습니다.
+        // else -> throw IllegalStateException("Unknown expression")
     }
 
     /*
