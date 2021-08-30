@@ -31,7 +31,12 @@ class User {
         // 3. obj가 User 타입인지 체크합니다.
         //  - class 비교: 정확한 User 타입인지 체크합니다.
         //  - instanceOf 비교: User 계층 구조에 포함되는지 체크합니다.
+        /*
         if (!(obj instanceof User)) {
+            return false;
+        }
+        */
+        if (obj.getClass() != User.class) {
             return false;
         }
 

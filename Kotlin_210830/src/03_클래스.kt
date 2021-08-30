@@ -76,12 +76,19 @@ class User(
         }
         // other: Any? -> Any
 
+        /*
         if (other !is User) {
             return false
         }
+        */
         // other: Any -> User
+        if (other.javaClass != User::class.java) {
+            return false
+        }
 
-        // other as User
+        // 위의 코드는 스마트캐스트가 동작하지 않습니다.
+        other as User
+
         // : 코틀린은 스마트 캐스트를 지원합니다.
         //  => 컴파일러가 코드를 분석해서, 자동으로 타입을
         //     추론해줍니다.
