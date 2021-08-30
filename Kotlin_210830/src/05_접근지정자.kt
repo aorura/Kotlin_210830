@@ -23,7 +23,19 @@ package ex5
 //   > 다른 모듈이라면, 같은 패키지 이름을 가지고 있다고 하더라도
 //     컴파일시 다른 이름으로 변경해버립니다.
 
-class User(protected val name: String = "Bob")
+//----
+// class / interface / enum
+//  Java: public / package
+
+// class / 전역 fun, var, val / interface / enum
+//   public: 외부 모듈에서도 접근이 가능합니다.
+// internal: 같은 모듈에서만 접근이 가능합니다.
+//  private: 같은 파일에서만 접근이 가능합니다.
+
+private class User(protected val name: String = "Bob")
+private fun foo() {
+}
+private val n = 40
 
 fun main() {
     val user = User()
