@@ -62,11 +62,20 @@ fun getWarmth(color: Color): String {
 //  ==
 fun mix(c1: Color, c2: Color): Color {
     val set: Set<Color> = setOf(c1, c2)
+
     return when (set) {
         setOf(Color.RED, Color.YELLOW) -> Color.ORANGE
         setOf(Color.BLUE, Color.YELLOW) -> Color.GREEN
         else -> throw Exception("Unknown")
     }
+
+    /*
+    return if (set == setOf(Color.RED, Color.YELLOW)) Color.ORANGE
+    else if (set == setOf(Color.BLUE, Color.YELLOW)) Color.GREEN
+    else throw Exception("Unknown")
+    */
+
+
 }
 
 fun main() {

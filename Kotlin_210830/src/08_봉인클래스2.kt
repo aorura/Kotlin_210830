@@ -11,6 +11,18 @@ fun eval(e: Expr): Int {
         is Sum -> eval(e.left) + eval(e.right)
         else -> throw IllegalStateException("Unknown expression")
     }
+
+    /*
+    if (e is Num) {
+        return e.value
+    } else if (e is Sum) {
+        return eval(e.left) + eval(e.right)
+    } else {
+        throw IllegalStateException("Unknown expression")
+    }
+    */
+
+
 }
 
 fun main() {
