@@ -31,14 +31,16 @@ class User {
         // 3. obj가 User 타입인지 체크합니다.
         //  - class 비교: 정확한 User 타입인지 체크합니다.
         //  - instanceOf 비교: User 계층 구조에 포함되는지 체크합니다.
-        /*
+
         if (!(obj instanceof User)) {
             return false;
         }
-        */
+
+        /*
         if (obj.getClass() != User.class) {
             return false;
         }
+        */
 
         // 4. obj를 User 객체로 캐스팅해야 합니다.
         User other = (User) obj;
@@ -54,12 +56,19 @@ class User {
     }
 }
 
+class Guest extends User {
+    Guest(String name, int age) {
+        super(name, age);
+    }
+}
+
 // Java에서 equals를 사용할 때, 반드시 null 체크를 해야합니다.
 //  => Objects.equals를 이용하면 됩니다.(Java 7)
 public class Sample {
     public static void main(String[] args) {
         User user1 = new User("Tom", 42);
-        User user2 = new User(null, 42);
+        // User user2 = new User(null, 42);
+        User user2 = new Guest("Tom", 42);
         // User user2 = user1;
 
         if (user1 == user2) {
@@ -69,6 +78,8 @@ public class Sample {
         // if (user1.equals(user2)) {
         if (Objects.equals(user1, user2)) {
             System.out.println("동일한 내용의 객체입니다.");
+        } else {
+            System.out.println("동일한 내용의 객체가 아닙니다.");
         }
 
     }
