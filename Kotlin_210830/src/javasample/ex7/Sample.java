@@ -1,8 +1,6 @@
 package javasample.ex7;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 
 // 파일에 위해 저장하기 위한 인터페이스 - Serializable
 interface State extends Serializable {
@@ -86,17 +84,37 @@ public class Sample {
 
         oos.writeObject(state);
 
-        fos.close();
         oos.close();
+        fos.close();
+    }
+
+    public static State loadStateFromFile() throws Exception {
+        FileInputStream fis = new FileInputStream("button.dat");
+        ObjectInputStream ois = new ObjectInputStream(fis);
+
+        State state = (State) ois.readObject();
+
+        ois.close();
+        fis.close();
+        return state;
     }
 
     public static void main(String[] args) throws Exception {
+        // 2. 복원
+        State state = loadStateFromFile();
+        Button button = new Button();
+        button.setState(state);
+
+        System.out.println(button);
+
+        /*
         // 1. 저장
         Button button = new Button();
         button.foo();
 
         State state = button.getState();
         saveStateToFile(state);
+        */
     }
 }
 
