@@ -1,5 +1,7 @@
 package javasample.ex3;
 
+import java.util.Objects;
+
 class User {
     private String name;
     private int age;
@@ -9,6 +11,10 @@ class User {
         this.age = age;
     }
 
+    // 객체의 동등성 판단에 사용되는 메소드
+    //  1. equals
+    //  2. hashCode
+    // => 반드시 두개의 메소드를 동시에 제공해야 합니다.
     @Override
     public boolean equals(Object obj) {
         // 1. 동일한 참조 인지 체크합니다.
@@ -34,6 +40,11 @@ class User {
         // 5. 비교 하고자하는 필드에 대한 비교해서, 같은 객체인지 판단합니다.
         return other.name.equals(name) &&
                 other.age == age;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age);
     }
 }
 
