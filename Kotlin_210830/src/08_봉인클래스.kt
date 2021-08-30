@@ -39,7 +39,47 @@ enum class Color(val red: Int, val green: Int, val blue: Int) {
 //   코틀린에서는 if도 Expression입니다.
 //   => 각 조건에 따른 블록의 마지막 표현식을 통해 결과값이 결정됩니다.
 
+fun printColor(color: Color) {
+    when (color) {
+        Color.RED -> {
+            println("RED")
+            println("RED")
+        }
+        Color.GREEN -> println("GREEN")
+        Color.BLUE -> println("BLUE")
+        else -> println("Other")
+    }
+}
+
+fun getWarmth(color: Color): String {
+    return when (color) {
+        Color.RED, Color.ORANGE, Color.YELLOW -> "Warm"
+        else -> "Cold"
+    }
+}
+
+// 코틀린에서는 when을 통해 객체 동등성 판단도 지원합니다.
+//  ==
+fun mix(c1: Color, c2: Color): Color {
+    val set: Set<Color> = setOf(c1, c2)
+    return when (set) {
+        setOf(Color.RED, Color.YELLOW) -> Color.ORANGE
+        setOf(Color.BLUE, Color.YELLOW) -> Color.GREEN
+        else -> throw Exception("Unknown")
+    }
+}
+
 fun main() {
+    println(mix(Color.RED, Color.YELLOW))
+    println(mix(Color.YELLOW, Color.RED))
+
+    printColor(Color.GREEN)
+    printColor(Color.RED)
+
+    println(getWarmth(Color.ORANGE))
+    println(getWarmth(Color.BLUE))
+
+
     var age = 30
     /*
     var grade = ""
@@ -49,22 +89,14 @@ fun main() {
         grade = "탈락"
     }
     */
-
-    val grade = if (age >= 10 && age < 20)
+    val grade = if (age in 10..19) // (age >= 10 && age < 20)
         "통과"
     else {
         "탈락"
     }
     println(grade)
 
-
-
     val color = Color.RED
     println(color.rgb())
     println(color.rgb)
 }
-
-
-
-
-
