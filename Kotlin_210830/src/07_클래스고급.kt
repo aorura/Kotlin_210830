@@ -26,6 +26,8 @@ package ex7
 // 3. 코틀린의 메소드는 기본적으로 오버라이딩이 금지되어 있는 final method 입니다.
 //   => open 키워드를 통해 메소드에 대한 오버라이딩을 허용할 수 있습니다.
 
+// 4. 프로퍼티도 결국 메소드 이기 때문에, open으로 지정될 경우, 오버라이딩이 가능합니다.
+
 /*
 open class Car(val name: String) {
     open fun display() {
@@ -48,7 +50,7 @@ open class Truck(name: String) : Car(name) {
 // Car의 객체를 만들 수 없습니다.
 // > 추상 클래스는 인스턴스화가 불가능합니다.
 //  abstract: 상속 허용
-abstract class Car(val name: String) {
+abstract class Car(open val name: String) {
     // 구현을 제공할 필요가 없고, 자식 클래스가 만드시 오버라이딩 하도록 해야 한다.
     // => abstract method
     // => 오버라이딩 허용
@@ -58,14 +60,19 @@ abstract class Car(val name: String) {
 }
 
 class Truck(name: String) : Car(name) {
+    override val name: String
+        get() {
+            return "Truck"
+        }
+
     override fun display() {
         println("Truck($name) display")
     }
 }
 
-
 fun main() {
     val car: Car = Truck("AAA")
+    println(car.name)
     car.display()
 }
 

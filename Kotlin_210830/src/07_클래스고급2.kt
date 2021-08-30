@@ -31,6 +31,32 @@ interface Clickable {
 
 
 // class Button implements Button {}
+/*
+class Person {
+    private String name;
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getFullName() { return name; }
+    public void setFullName(String fullName) { name = fullName; }
+}
+*/
+
+class Person {
+    var name: String        // 메모리에 저장공간이 존재하는 프로퍼티(접근자 메소드)
+
+    var fullName: String    // 메모리에 저장공간이 필요없는 프로퍼티
+        get() {
+            return name
+        }
+        set(value) {
+            name = value
+        }
+
+    constructor(name: String) {
+        this.name = name
+    }
+}
 
 class Button : Clickable {
     // override var name: String = "Tom"  // Backing Field가 있는 프로퍼티
