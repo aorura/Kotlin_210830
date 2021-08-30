@@ -49,9 +49,12 @@ fun eval(e: Expr): Int {
         throw IllegalStateException("Unknown expression")
     }
     */
-
-
 }
+
+// 자바의 코드를 코틀린에서 100% 사용할 수 있습니다.
+// 코틀린의 코드를 자바에서 100% 이용하기 어렵습니다.
+//  => 고려해야 하는 사항이 있습니다.
+
 
 fun main() {
     val left = Num(10)

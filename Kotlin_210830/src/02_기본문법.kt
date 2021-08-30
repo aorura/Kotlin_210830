@@ -1,7 +1,7 @@
 // 02_기본문법.kt
 package ex2
 
-import javasample.ex2.Sample
+import java.io.Serializable
 
 // 자바는 디렉토리를 통해 패키지가 구성되어야 하지만,
 // 코틀린은 패키지를 그냥 사용할 수 있습니다.
@@ -77,6 +77,12 @@ fun main() {
     val a: Long = n.toLong()
 }
 
+/*
+internal interface State : Serializable
+internal interface View {
+    var state: State?
+}
+*/
 
 
 

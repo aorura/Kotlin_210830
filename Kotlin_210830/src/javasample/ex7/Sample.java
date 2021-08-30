@@ -8,7 +8,6 @@ interface State extends Serializable {
 
 interface View {
     State getState();               // 현재 상태를 반환합니다.
-
     void setState(State state);     // 현재 상태를 변경합니다.
 }
 
