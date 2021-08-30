@@ -30,8 +30,58 @@ fun foo() {
     println("foo")
 }
 
+/*
 fun main() {
     println(add(10, 20))
     // println(foo())
     println(Sample.foo())
 }
+*/
+// 3. 타입 시스템
+//  Java
+//   1) Primitive Type
+//     int, double, char, byte, long ...
+//    => value type으로 동작합니다.
+//    => ArrayList 같은 컬렉션에 저장할 수 없습니다.
+//      : int    -> Integer(Wrapper class)
+//        double -> Double
+//    => Auto boxing / unboxing을 제공합니다.
+//    => 객체 타입이 아니기 때문에, 필드와 메소드를 가질수 없습니다.
+
+//   2) Reference Type(객체)
+//     class, interface, enum. array
+//   => 참조 계수 기반으로 객체의 수명의 관리됩니다.
+//   => 필드와 메소드를 가질 수 있습니다.
+//------------------------------------------------------
+//  Kotlin
+//   => 모든 타입은 객체 타입입니다.
+//    : 모든 타입은 필드와 메소드를 가지고 있습니다.
+//   => 강타입 언어입니다.
+//    : 암묵적인 타입 변환을 거의 허용하지 않습니다.
+
+// 4. 변수 정의하는 방법
+//   Java
+//    int n = 42;
+//   Kotlin
+//    val: final int n = 42;
+//    var: int n = 42;
+//   1) 타입 추론
+//     val n = 42   // n: Int
+//   2) 명시적 타입 지정
+//     val n: Long = 42
+
+fun main() {
+    println(42.toDouble())
+
+    val n: Int = 42
+    val a: Long = n.toLong()
+}
+
+
+
+
+
+
+
+
+
