@@ -26,9 +26,10 @@ class Person(val name: String, val age: Int) {
         }
     }
 }
-// companion object는 클래스 이름을 통해 참조할 수 있습니다.
+
 
 fun main() {
+    // companion object는 클래스 이름을 통해 참조할 수 있습니다.
     val p = Person
     p.foo()
 
@@ -37,6 +38,7 @@ fun main() {
         "age" to 42
     )
 
+    // 타입이 인터페이스를 만족하는 것처럼 사용할 수 있습니다.
     val person = fromJSON(json, Person)
     println(person)
 }
