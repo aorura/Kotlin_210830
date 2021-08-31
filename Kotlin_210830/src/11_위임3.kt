@@ -34,7 +34,6 @@ class SampleDelegate<T>(var value: T, private val predicate: Predicate<T>? = nul
     }
 }
 
-
 /*
 interface Predicate<T> {
     fun test(e: T): Boolean
