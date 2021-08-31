@@ -52,8 +52,21 @@ class User {
 //    Delegates.observable
 //    프로퍼티의 값의 변경을 조건을 체크해서 변경하고 싶다.
 //    Delegates.vetoable
+
+class Data {
+    fun isValid(): Boolean {
+        return true
+    }
+}
+
+
 class Person(var firstName: String, var lastName: String) {
     // var fullName: String = "$firstName $lastName"
+
+    var data: Data by Delegates.vetoable(Data())
+    { _: KProperty<*>, _: Data, new: Data ->
+        new.isValid()
+    }
 
     // fullName이 변경될 때마다, firstName과 lastName도 변경되도록 하는 로직
     var fullName: String by Delegates.observable("$firstName $lastName")
