@@ -2,7 +2,12 @@ package javasample.ex9;
 
 import java.util.Objects;
 
+// Lombok 라이브러리를 통해, 보일러플레이트를 제거할 수 있습니다.
+//  - Java 최신버전에서 Record 라는 개념으로 비슷한 기능을 제공합니다.
+
 class User implements Cloneable {
+
+
     private String name;
     private int age;
 
@@ -67,6 +72,18 @@ class User implements Cloneable {
         }
         return null;
     }
+
+    // 객체가 GC에 의해서 해지되는 시점에 수행되는 메소드 입니다.
+    // => 사용하지 않는 것이 좋습니다.
+    //  1) 호출 시점이 명확하지 않습니다.
+    //  2) 모든 계층 구조의 메소드가 finalize를 온전하게 구현해야 합니다.
+    //  3) 호출이 보장되지 않습니다.
+    //  : 안드로이드 프레임워크 내부 코드에서 finalize는 누수가 발생할 경우,
+    //    로그를 통해 알려주는 역활로만 구현되어 있습니다.
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+    }
 }
 
 // Object
@@ -87,7 +104,8 @@ class User implements Cloneable {
 public class Sample {
     public static void main(String[] args) {
         User user1 = new User("Tom", 42);
-        User user2 = user1.clone(); // 깊은 복사
+        // User user2 = user1.clone(); // 깊은 복사
+        User user2 = new User(user1);
 
         System.out.println(user2);
     }
