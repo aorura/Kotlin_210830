@@ -2,6 +2,8 @@
 package ex11_4
 
 import java.util.concurrent.TimeUnit
+import kotlin.properties.Delegates
+import kotlin.reflect.KProperty
 
 // 코틀린이 기본적으로 제공하는 프로퍼티 위임 객체
 
@@ -29,6 +31,7 @@ class User {
     val image: Image by lazy {
         Image()
     }
+
     // 블록의 결과는 마지막 표현식에 의해 결정됩니다.
     // var image2: Image? = null
     lateinit var image2: Image
@@ -45,7 +48,39 @@ class User {
     }
 }
 
+// 2. 프로퍼티의 변경을 관찰할 수 있습니다.
+//    Delegates.observable
+//    프로퍼티의 값의 변경을 조건을 체크해서 변경하고 싶다.
+//    Delegates.vetoable
+
+class Person(var firstName: String, var lastName: String) {
+    // var fullName: String = "$firstName $lastName"
+
+    // fullName이 변경될 때마다, firstName과 lastName도 변경되도록 하는 로직
+    var fullName: String by Delegates.observable("$firstName $lastName")
+    { prop: KProperty<*>, old: String, new: String ->
+        val arr = new.split(" ")
+        firstName = arr[0]
+        lastName = arr[1]
+    }
+
+    var age: Int by Delegates.vetoable(1)
+    { prop: KProperty<*>, old: Int, new: Int ->
+        new > 0
+    }
+}
+
 fun main() {
+    val person = Person("Gildong", "Hong")
+    person.age = 5
+    println(person.age)
+    person.age = -5
+    println(person.age)
+
+    person.fullName = "Soonshin Lee"
+    println(person.firstName)
+    println(person.lastName)
+
     println("User 객체 생성 시작")
     val user = User()
     user.image2 = Image()
