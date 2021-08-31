@@ -30,7 +30,8 @@ class Person(val name: String, val age: Int) {
 
 fun main() {
     // companion object는 클래스 이름을 통해 참조할 수 있습니다.
-    val p = Person
+    val p = Person  // Person.Companion
+    // val p = Person.Companion
     p.foo()
 
     val json = mapOf(
