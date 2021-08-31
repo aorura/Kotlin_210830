@@ -69,7 +69,7 @@ class Cursor {
 //   1. static final 필드는 동기화가 필요하지 않습니다.
 //   2. 중첩 클래스의 정적 필드는 처음 접근되는 시점에 초기화가 수행됩니다.
 class Cursor {
-    static class Singleton {
+    private static class Singleton {
         private static final Cursor INSTANCE = new Cursor();
     }
 
