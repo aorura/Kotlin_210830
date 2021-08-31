@@ -4,7 +4,7 @@ package ex9
 import java.util.*
 
 // VO(Value Object) / DTO(Data Transfer Object) / Entity(Database Entity)
-
+/*
 class User(val name: String, val age: Int) {
     override fun toString(): String {
         return "User(name='$name', age=$age)"
@@ -41,6 +41,7 @@ class User(val name: String, val age: Int) {
         return age
     }
 }
+*/
 
 
 // 1. 객체를 문자열로 표현할 수 있어야 합니다. - toString()
@@ -49,7 +50,15 @@ class User(val name: String, val age: Int) {
 // 3. 객체의 복사본을 만드는 방법
 //     copy
 // 4. 비구조화 선언 문법
-// data class User(val name: String, val age: Int)
+data class User(val name: String, val age: Int)
+
+// 데이터 클래스
+// : Data class must have a t least oneprimary constructor parameter
+// data class Person
+
+// : Data class primary constructor
+//   must have only property (val / var) parameters
+// data class Person(name: String)
 
 fun main() {
     val user1 = User("Tom", 42)
