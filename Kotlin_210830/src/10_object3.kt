@@ -40,6 +40,10 @@ fun main() {
 
     // 타입이 인터페이스를 만족하는 것처럼 사용할 수 있습니다.
     val person = fromJSON(json, Person)
+
+    // Gson
+    // val person2 = gson.fromJson(json, Person.class);
+
     println(person)
 }
 

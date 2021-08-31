@@ -6,17 +6,23 @@ interface Clickable {
     }
 }
 
+interface Focusable {
+    fun focus() {}
+}
 
 fun click(clickable: Clickable) {
     clickable.click()
 }
 
+open class Base
+
 class Button : Clickable
 
 class Button2 {
-    companion object: Clickable
+    companion object: Base(), Clickable, Focusable
 }
 
+//--------
 object Button3 : Clickable
 
 fun main() {
