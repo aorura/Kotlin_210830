@@ -52,7 +52,6 @@ class User {
 //    Delegates.observable
 //    프로퍼티의 값의 변경을 조건을 체크해서 변경하고 싶다.
 //    Delegates.vetoable
-
 class Person(var firstName: String, var lastName: String) {
     // var fullName: String = "$firstName $lastName"
 
