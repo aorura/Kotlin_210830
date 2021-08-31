@@ -26,7 +26,6 @@ fun main() {
 */
 
 // 활용
-
 // Comparator 인터페이스를 구현하는 객체를 제공해야 합니다.
 // class NameComparator : Comparator<Person> {
 object NameComparator : Comparator<Person> {
@@ -39,11 +38,11 @@ data class Person(val name: String) {
     // 클래스 내부에 object 선언 객체를 둘 수 있습니다.
     object NameComparator : Comparator<Person> {
         override fun compare(o1: Person, o2: Person): Int {
-            return o1.name.compareTo(o2.name)
+            // return o1.name.compareTo(o2.name)
+            return o2.name.compareTo(o1.name)
         }
     }
 }
-
 
 fun main() {
     val people = listOf(
@@ -60,7 +59,7 @@ fun main() {
     val result1 = people.sortedWith(NameComparator)
     println(result1)
     val result2 = people.sortedWith(Person.NameComparator)
-    println(result1)
+    println(result2)
 
 }
 
