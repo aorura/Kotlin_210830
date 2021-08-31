@@ -4,7 +4,7 @@ package ex9
 import java.util.*
 
 // VO(Value Object) / DTO(Data Transfer Object) / Entity(Database Entity)
-/*
+
 class User(val name: String, val age: Int) {
     override fun toString(): String {
         return "User(name='$name', age=$age)"
@@ -31,16 +31,25 @@ class User(val name: String, val age: Int) {
     ): User {
         return User(name, age)
     }
+
+    // 비구조화 선언 - 연산자 오버로딩 메소드
+    operator fun component1(): String {
+        return name
+    }
+
+    operator fun component2(): Int {
+        return age
+    }
 }
-*/
+
 
 // 1. 객체를 문자열로 표현할 수 있어야 합니다. - toString()
 // 2. 객체의 동등성 판단
 //     equals / hashCode
 // 3. 객체의 복사본을 만드는 방법
 //     copy
-
-data class User(val name: String, val age: Int)
+// 4. 비구조화 선언 문법
+// data class User(val name: String, val age: Int)
 
 fun main() {
     val user1 = User("Tom", 42)
@@ -54,4 +63,20 @@ fun main() {
 
     val user4 = user1.copy(name = "Bob")
     println(user4)
+
+    val list: List<User> = listOf(user1, user2, user3, user4)
+    for (e in list) {
+        println("name = ${e.name} / age = ${e.age}")
+    }
+
+    // 비구조화 선언
+    // => 약속된 메소드가 수행됩니다.
+    // => "연산자 오버로딩"
+    //  (name, age): Tuple
+    for ((name, age) in list) {
+        println("name = $name / age = $age")
+    }
+
+    val (name, _) = user1
+    println(name)
 }
