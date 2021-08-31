@@ -14,15 +14,22 @@ class SampleDelegate {
     operator fun getValue(thisRef: User, property: KProperty<*>): String {
         return "Tom"
     }
+
+    // Type 'SampleDelegate' has no method
+    // 'setValue(User, KProperty<*>, String)'
+    operator fun setValue(thisRef: User, property: KProperty<*>, value: String) {
+        println("value: $value")
+    }
 }
 
 class User {
-    val name: String by SampleDelegate()
+    var name: String by SampleDelegate()
     // name에 대한 getter 호출을 SampleDelegate 객체가 처리한다.
     // => 약속된 메소드를 호출하는 연산자 오버로딩으로 구현됩니다.
 }
 
 fun main() {
     val user = User()
+    user.name = "Bob"
     println(user.name)
 }
