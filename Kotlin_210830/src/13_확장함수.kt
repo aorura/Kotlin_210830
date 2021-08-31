@@ -53,6 +53,7 @@ fun <E> xjoinToString(
 }
 */
 
+// public
 fun <E> Collection<E>.xjoinToString(
     // collection: Collection<E>,
     separator: String,
