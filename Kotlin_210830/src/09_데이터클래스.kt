@@ -43,7 +43,6 @@ class User(val name: String, val age: Int) {
 }
 */
 
-
 // 1. 객체를 문자열로 표현할 수 있어야 합니다. - toString()
 // 2. 객체의 동등성 판단
 //     equals / hashCode
@@ -60,7 +59,15 @@ data class User(val name: String, val age: Int)
 //   must have only property (val / var) parameters
 // data class Person(name: String)
 
+fun foo(a: Int = 10, b: Int = 20) {
+
+}
+
 fun main() {
+    foo(10, 20)
+    foo(10)
+    foo()
+
     val user1 = User("Tom", 42)
     val user2 = User("Tom", 42)
 
