@@ -7,7 +7,6 @@ import kotlin.reflect.KProperty
 // - 클래스 위임
 // - 프로퍼티 위임
 //  : 접근자 메소드에 대한 동작을 다른 객체에게 위임한다.
-
 class SampleDelegate {
     // Type 'SampleDelegate' has no method
     // 'getValue(User, KProperty<*>)' and thus it cannot serve as a delegate
