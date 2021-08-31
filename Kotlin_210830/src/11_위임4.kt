@@ -65,7 +65,7 @@ class Person(var firstName: String, var lastName: String) {
 
     var data: Data by Delegates.vetoable(Data())
     { _: KProperty<*>, _: Data, new: Data ->
-        new.isValid()
+        new.isValid()                        // true / false
     }
 
     // fullName이 변경될 때마다, firstName과 lastName도 변경되도록 하는 로직
