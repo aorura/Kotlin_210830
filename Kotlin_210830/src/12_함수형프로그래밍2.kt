@@ -1,4 +1,3 @@
-import ex13.lastChar
 
 // 12_함수형프로그래밍2.kt
 // - 메소드
@@ -45,5 +44,6 @@ fun main() {
     fn1(car2)
     fn2(car1, "Seoul")
 
-    "hello".lastChar()
+    // "hello".lastChar()
 }
+

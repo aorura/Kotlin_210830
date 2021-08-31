@@ -33,9 +33,77 @@ fun String.lastChar(): Char {
 //  => 주의해야 할 점
 //   : 함부로 추가하면 안됩니다.
 
+/*
+fun <E> xjoinToString(
+    collection: Collection<E>,
+    separator: String,
+    prefix: String,
+    postfix: String
+): String {
+    val result = StringBuilder(prefix)
+
+    for ((index, element) in collection.withIndex()) {
+        if (index > 0)
+            result.append(separator)
+        result.append(element)
+    }
+
+    result.append(postfix)
+    return result.toString()
+}
+*/
+
+fun <E> Collection<E>.xjoinToString(
+    // collection: Collection<E>,
+    separator: String,
+    prefix: String,
+    postfix: String
+): String {
+    val result = StringBuilder(prefix)
+
+    for ((index, element) in this.withIndex()) {
+        if (index > 0)
+            result.append(separator)
+        result.append(element)
+    }
+
+    result.append(postfix)
+    return result.toString()
+}
+
 fun main() {
+    val list = listOf(1, 2, 3, 4, 5)
+    /*
+    val str = xjoinToString(
+        list,
+        separator = ", ",
+        prefix = "[",
+        postfix = "]"
+    )
+    */
+    val str = list.xjoinToString(
+        separator = ", ",
+        prefix = "[",
+        postfix = "]"
+    )
+
+    println(str)
+
+
     // val result = lastChar("hello")
     val result = "hello".lastChar()
 
     println(result)
 }
+
+
+
+
+
+
+
+
+
+
+
+
