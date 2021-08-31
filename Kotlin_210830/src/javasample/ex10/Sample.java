@@ -85,8 +85,31 @@ class Cursor {
     }
 }
 
+interface MouseAdapter {
+    void mouseClicked();
+
+    void mouseEntered();
+}
+
 public class Sample {
     public static void main(String[] args) {
+        int x = 0;
+        MouseAdapter adapter = new MouseAdapter() {
+            @Override
+            public void mouseClicked() {
+                // System.out.println(++x);
+                // final 참조입니다.
+                // : Variable 'x' is accessed from within inner class,
+                //   needs to be final or effectively final
+            }
+
+            @Override
+            public void mouseEntered() {
+
+            }
+        };
+
+
         System.out.println("Main start..");
         Cursor c1 = Cursor.getInstance();
         System.out.println(c1);

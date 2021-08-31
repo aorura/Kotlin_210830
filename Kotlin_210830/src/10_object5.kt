@@ -48,9 +48,12 @@ fun main() {
     val window = Window()
 
     // 익명의 객체를 생성할 때 object 키워드를 통해 생성할 수 있습니다.
+    // => 차이점이 한개 있습니다.
+    //    "클로저"
+    var n = 0
     window.mouseAdapter = object : MouseAdapter {
         override fun mouseClicked() {
-            println("mouseClicked")
+            println("mouseClicked - ${++n}")
         }
 
         override fun mouseEntered() {
