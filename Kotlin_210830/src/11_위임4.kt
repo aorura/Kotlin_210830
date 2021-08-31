@@ -1,0 +1,43 @@
+// 11_위임4.kt
+package ex11_4
+
+import java.util.concurrent.TimeUnit
+
+// 코틀린이 기본적으로 제공하는 프로퍼티 위임 객체
+
+
+class Image {
+    init {
+        println("Image 객체 생성 시작")
+        TimeUnit.SECONDS.sleep(2)  // 2초
+        println("Image 객체 생성 완료")
+    }
+
+    fun draw() {
+        println("Image draw")
+    }
+}
+
+// 1. lazy 객체
+//   => 지연 초기화
+//      객체를 바로 생성하는 것이 아니라, 처음으로 접근되는 시점에 생성한다.
+//      "스레드 안전합니다."
+class User {
+    // val image: Image = Image()
+    val image: Image by lazy {
+        Image()
+    }
+    // 블록의 결과는 마지막 표현식에 의해 결정됩니다.
+
+    fun drawImage() {
+        image.draw()
+    }
+}
+
+fun main() {
+    println("User 객체 생성 시작")
+    val user = User()
+    println("User 객체 생성 완료")
+    user.drawImage() // !!!!!!
+    user.drawImage()
+}
