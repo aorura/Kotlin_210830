@@ -32,6 +32,7 @@ class Button : View {
     // > 내부 클래스로 만들고 싶다면, inner 라는 키워드를 통해
     //   만들 수 있습니다.
     // inner class ButtonState(
+    //    val outerReference: Button
     class ButtonState(
         val x: Int,
         val y: Int,
@@ -51,10 +52,11 @@ class Button : View {
     }
 }
 
-// Java
+// Java(Checked Exception)
 //  특정한 메소드가 예외를 던질 경우,
 //  - 예외를 try-catch를 통해서 처리하거나,
 //  - 예외를 외부로 다시 던져야 합니다.
+
 // > 코틀린은 예외 처리가 강제되지 않습니다.
 //   : 코틀린은 예외 처리에 대한 부분에 대해서 누락될 가능성이 높습니다.
 

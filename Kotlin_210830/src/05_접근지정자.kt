@@ -25,14 +25,13 @@ package ex5
 
 //----
 // class / interface / enum
-//  Java: public / package
+//  Java: public / package(기본)
 
 // class / 전역 fun, var, val / interface / enum
-//   public: 외부 모듈에서도 접근이 가능합니다.
+//   public: 외부 모듈에서도 접근이 가능합니다.(기본)
 // internal: 같은 모듈에서만 접근이 가능합니다.
 //  private: 같은 파일에서만 접근이 가능합니다.
-
-private class User(protected val name: String = "Bob")
+private class User(private val name: String = "Bob")
 private fun foo() {
 }
 private val n = 40

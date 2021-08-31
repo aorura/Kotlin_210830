@@ -74,8 +74,6 @@ fun mix(c1: Color, c2: Color): Color {
     else if (set == setOf(Color.BLUE, Color.YELLOW)) Color.GREEN
     else throw Exception("Unknown")
     */
-
-
 }
 
 fun main() {
@@ -89,7 +87,7 @@ fun main() {
     println(getWarmth(Color.BLUE))
 
 
-    var age = 30
+    val age = 30
     /*
     var grade = ""
     if (age >= 10 && age < 20)  {
@@ -103,6 +101,20 @@ fun main() {
     else {
         "탈락"
     }
+
+    val grade2 = when {
+        age in 10..19 -> "통과"
+        age in 20..29 -> "보류"
+        else -> "탈락"
+    }
+    val grade3 = when (age) {
+        in 10..19 -> "통과"
+        in 20..29 -> "보류"
+        else -> "탈락"
+    }
+
+
+
     println(grade)
 
     val color = Color.RED

@@ -19,7 +19,6 @@ class User {
             field = newName.uppercase()
         }
     // field라는 키워드를 통해 실제 필드에 접근이 가능합니다.
-
     var age: Int
         private set
 
