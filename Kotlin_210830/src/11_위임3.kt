@@ -18,7 +18,8 @@ class SampleDelegate(var value: String) {
 */
 
 // Generic
-class SampleDelegate<T>(var value: T, val predicate: Predicate<T>? = null) {
+// 1) 값이 조건에 부합되어야만 변경되도록 하고 싶습니다.
+class SampleDelegate<T>(var value: T, private val predicate: Predicate<T>? = null) {
     operator fun getValue(thisRef: User, property: KProperty<*>): T {
         return value
     }
@@ -33,7 +34,7 @@ class SampleDelegate<T>(var value: T, val predicate: Predicate<T>? = null) {
     }
 }
 
-// 1) 값이 조건에 부합되어야만 변경되도록 하고 싶습니다.
+
 /*
 interface Predicate<T> {
     fun test(e: T): Boolean
