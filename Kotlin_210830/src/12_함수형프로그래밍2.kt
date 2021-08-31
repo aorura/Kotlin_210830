@@ -24,6 +24,7 @@ class Car {
 fun main() {
     // 동반 객체의 메소드를 참조할 때는, Car.Companion::add / (Car)::add
     val fn5 = Car.Companion::add
+    Car.add(10, 20) // this를 전달할 필요가 없습니다.
 
     val fn1: (Car) -> Unit = Car::go
     val fn2: (Car, String) -> Unit = Car::move

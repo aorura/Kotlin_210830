@@ -52,6 +52,7 @@ fun main() {
 class User private constructor(val nickname: String) {
     companion object {
         fun newSubscribingUser(email: String): User {
+            // this: Companion Object
             return User(email.substringBefore("@"))
         }
 

@@ -78,6 +78,8 @@ class Cursor {
     }
 
     public static Cursor getInstance() {
+        // this
+        // 'javasample.ex10.Cursor.this' cannot be referenced from a static context
         return Singleton.INSTANCE;
     }
 
