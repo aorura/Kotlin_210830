@@ -10,11 +10,20 @@ package ex14
 //        var(getter + setter)
 
 fun String.lastChar(): Char = this[length - 1]
-
 val String.lastChar: Char
     get() = this[length - 1]
 
+var StringBuilder.lastChar: Char
+    get() = this[length - 1]
+    set(value) = setCharAt(length - 1, value)
+
+// 확장 메소드나 확장 함수도 외부에 있는 함수이기 때문에,
+// 해당 클래스가 외부로 공개한 메소드나 프로퍼티만 접근이 가능합니다.
 fun main() {
+    val sb = StringBuilder("hello")
+    sb.lastChar = 'O'
+    println(sb.lastChar)
+
     val result = "hello".lastChar()
     println(result)
 
