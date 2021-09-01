@@ -8,8 +8,10 @@ package ex16_4
 
 // 2) 함수를 반환하는 함수
 // - (String) -> String 함수를 반환합니다.
-// 1) 실행 시간에 함수를 생성할 수 있다.
+//   실행 시간에 함수를 생성할 수 있다.
 //   => 함수의 코드 중복을 제거한다.
+//   => 함수 합성
+//   => 커링
 
 fun foo1(): (String) -> String {
     return { text ->
@@ -46,8 +48,8 @@ fun goo(a: Int) {
 // 2) 클로저
 fun main() {
     val isEven = modulo(2, 0)
-
     val isOdd = modulo(2, 1)
+
     val list = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 
     val result2 = list.filter(isOdd)
