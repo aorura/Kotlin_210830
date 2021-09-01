@@ -5,7 +5,9 @@ package javasample.ex23;
 //  Iterator
 //  Iterable
 
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 class SListIterator<E> implements Iterator<E> {
     private SList.Node<E> current;
@@ -69,16 +71,23 @@ class SList<E> implements Iterable<E> {
 
 public class Sample {
     public static void main(String[] args) {
-        SList<Integer> list = new SList<>();
-        list.addFront(10);
-        list.addFront(20);
-        list.addFront(30);
+        // SList<Integer> list = new SList<>();
+        // list.addFront(10);
+        // list.addFront(20);
+        // list.addFront(30);
+        List<Integer> list = Arrays.asList(10, 20, 30);
 
         // System.out.println(list.front());
-
         Iterator<Integer> iterator = list.iterator();
         while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
+
+        // Collection이 반복자의 요구사항(Iterator / Iterable) 만족한다면,
+        // 향상된 for 구문을 사용할 수 있습니다.
+        for (Integer e : list) {
+            System.out.println(e);
+        }
+
     }
 }
