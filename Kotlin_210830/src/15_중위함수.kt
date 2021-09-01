@@ -18,6 +18,8 @@ fun main() {
     // val pair1 = Pair<String, Any>("name", "Tom")
     // val pair1 = pair("name", "Tom")
 
+    val pair4 = 42 pair 100
+
     val pair2 = "name".pair("Tom")
     val pair3 = "name" pair "Tom"       // infix
 
