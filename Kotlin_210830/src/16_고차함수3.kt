@@ -59,7 +59,17 @@ fun main() {
         it % 2 == 0
     }
 
+    fun foo(block: () -> Unit) {}
+    foo {
+    }
 
+    // 7. 람다의 타입도 함수의 타입과 동일합니다.
+    val fn: (Int) -> Double = { e: Int ->
+        e.toDouble()
+    }
+
+    println(fn(32))
+    
     println(result)
 }
 
