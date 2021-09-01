@@ -16,11 +16,12 @@ fun lookForAlice1(people: List<Person>) {
     println("No Alice!")
 }
 
-// 2. forEach
+
 inline fun <T> Iterable<T>.forEach2(action: (T) -> Unit): Unit {
     for (element in this) action(element)
 }
 
+// 2. forEach - 람다 표현식
 // 비지역반환은 inline 함수에서만 가능합니다.
 fun lookForAlice2(people: List<Person>) {
     people.forEach2 { person ->
@@ -34,7 +35,20 @@ fun lookForAlice2(people: List<Person>) {
     println("No Alice!")
 }
 
-// 1) Found - O
+// 3. 익명 함수
+fun lookForAlice3(people: List<Person>) {
+    people.forEach(fun(person: Person) {
+        if (person.name == "Alice") {
+            println("Found!")
+            // return                 // 기본은 지역 반환입니다.
+            return@lookForAlice3      // 비지역반환
+        }
+    })
+
+    println("No Alice!")
+}
+
+// 1) Found
 // 2) Found
 //    No Alice!
 
@@ -45,5 +59,5 @@ fun main() {
         Person("Alice"),
     )
 
-    lookForAlice2(list)
+    lookForAlice3(list)
 }
