@@ -30,7 +30,7 @@ class SListIterator<E> implements Iterator<E> {
     }
 }
 
-class SList<E> {
+class SList<E> implements Iterable<E> {
     private Node<E> head = null;
 
     public void addFront(E value) {
@@ -39,6 +39,13 @@ class SList<E> {
 
     public E front() {
         return head.value;
+    }
+
+    // 처음 위치를 가르키는 반복자 객체를 얻어오는 방법을 제공합니다.
+    // => Iterable
+    @Override
+    public Iterator<E> iterator() {
+        return new SListIterator<>(head);
     }
 
     static class Node<E> {
@@ -67,6 +74,11 @@ public class Sample {
         list.addFront(20);
         list.addFront(30);
 
-        System.out.println(list.front());
+        // System.out.println(list.front());
+
+        Iterator<Integer> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
     }
 }
