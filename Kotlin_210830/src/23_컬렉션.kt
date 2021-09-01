@@ -10,7 +10,7 @@ import ex19_2.Intent
 //  > Iterator / Iterable
 class SListIterator<E>(var current: SList.Node<E>?) : Iterator<E> {
     override fun hasNext(): Boolean =
-        current == null
+        current != null
 
     override fun next(): E {
         val ret = current?.value
