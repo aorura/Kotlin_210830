@@ -3,6 +3,7 @@ package ex19_2
 
 // inline
 // 1) 함수가 인자를 함수로 받을 경우
+// 2) reified Generic
 
 // Android
 // val intent = Intent(this, MainActivity::class.java)
@@ -69,8 +70,8 @@ class MainActivity : Activity() {
         startActivity(intent)
 
         startActivity<SecondActivity>()
-        //  val intent = Intent(this, SecondActivity::class.java)
-        //  startActivity(intent)
+        //    val intent = Intent(this, SecondActivity::class.java)
+        //    startActivity(intent)
     }
 }
 
