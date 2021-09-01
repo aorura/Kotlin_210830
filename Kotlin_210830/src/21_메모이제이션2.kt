@@ -40,11 +40,13 @@ fun main() {
     println(user1.hashCode())
     println(user2.hashCode())
 
-    val toJson = User::toJson.memoized()
-    println(toJson(user1))
-    println(toJson(user2))
-    println(toJson(user1))
-    println(toJson(user2))
+    val toJsonMemoized: User.() -> String = User::toJson.memoized()
+    toJsonMemoized(user1)
+    user1.toJsonMemoized()
+    // println(toJson(user1))
+    // println(toJson(user2))
+    // println(toJson(user1))
+    // println(toJson(user2))
 
     /*
     val user = User()
