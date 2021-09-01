@@ -35,7 +35,7 @@ fun add4(a: Int, b: Int): Int {
 }
 // (Int, Int) -> Int
 
-// (Int, Char, Double) -> Unit
+// (a: Int, b: Char, c: Double) -> Unit
 fun foo(a: Int, b: Char, c: Double) {
 }
 

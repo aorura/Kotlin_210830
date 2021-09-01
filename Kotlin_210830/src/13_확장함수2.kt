@@ -2,11 +2,11 @@
 package ex13_2
 
 open class View {
-    open fun click() = println("View click")     // 1
+    // open fun click() = println("View click")     // 1
 }
 
 class Button : View() {
-    override fun click() = println("Button click") // 2
+    // override fun click() = println("Button click") // 2
 }
 
 // Extension is shadowed by a member: public open fun click(): Unit
@@ -19,6 +19,6 @@ fun Button.click() = println("Button click") // 2
 //    절대 호출되지 않습니다.
 
 fun main() {
-    val view: Button = Button()
+    val view: View = Button()
     view.click()
 }

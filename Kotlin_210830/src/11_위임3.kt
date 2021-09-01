@@ -19,7 +19,6 @@ class SampleDelegate(var value: String) {
 
 // Generic
 // 1) 값이 조건에 부합되어야만 변경되도록 하고 싶습니다.
-
 // 2) 프로퍼티의 값의 변경을 알 수 있는 위임 객체
 interface ValueChanged<T> {
     fun onValueChanged(old: T, new: T)

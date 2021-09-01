@@ -33,6 +33,10 @@ fun main() {
     val car2 = Car()
 
     // Bound Reference
+    // => 인자를 고정하는 것(bind)
+    // => car1::go
+    // => go(this: Car)
+    //   - 첫번째 인자가 car1 객체로 고정되었다.
     val fn3: () -> Unit = car1::go
     fn3()        // go(car1)
     val fn4: (String) -> Unit = car1::move

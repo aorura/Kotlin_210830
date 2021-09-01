@@ -10,8 +10,12 @@ package ex14
 //        var(getter + setter)
 
 fun String.lastChar(): Char = this[length - 1]
+// fun lastChar(text: String): Char {}
+
 val String.lastChar: Char
     get() = this[length - 1]
+// fun String.getLastChar(): Char {}
+// fun getLastChar(text: String): Char {}
 
 var StringBuilder.lastChar: Char
     get() = this[length - 1]

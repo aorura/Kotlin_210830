@@ -14,9 +14,14 @@ fun lastChar(text: String): Char {
 // Extension Function을 만드는 방법
 // - 수신 객체 타입 지정: this로 암묵적으로 전달됩니다.
 // lastChar(/* this: String */)
+/*
 fun String.lastChar(): Char {
-    return this[this.length - 1]  // get(index: Int)
+    return this[length - 1]  // get(index: Int)
 }
+*/
+fun String.lastChar(): Char = get(length - 1)
+// fun String.lastChar(): Char = this[length - 1]
+
 
 // 기존 라이브러리를 확장하는 방법
 // 1) 상속(수직 확장)
@@ -53,7 +58,6 @@ fun <E> xjoinToString(
 }
 */
 
-// public
 fun <E> Collection<E>.xjoinToString(
     // collection: Collection<E>,
     separator: String,
@@ -72,7 +76,23 @@ fun <E> Collection<E>.xjoinToString(
     return result.toString()
 }
 
+class Bag {
+    operator fun get(index: String): String {
+        return "world"
+    }
+
+    operator fun set(index: String, value: String) {
+
+    }
+}
+
 fun main() {
+    val bag = Bag()
+    println(bag["hello"])
+    println(bag.get("hello"))
+
+    bag["hello"] = "world"
+
     val list = listOf(1, 2, 3, 4, 5)
     /*
     val str = xjoinToString(
