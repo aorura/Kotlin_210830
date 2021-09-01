@@ -24,9 +24,8 @@ class IncThread : Thread() {
 
 // Expected performance impact from inlining is insignificant.
 // Inlining works best for functions with parameters of functional types
-fun add(a: Int, b: Int) = a + b
+// fun add(a: Int, b: Int) = a + b
 // 위의 함수에 대한 인라인에 대한 판단은 이미 JVM 상에서 효과적으로 수행됩니다.
-
 
 
 class IncThread(val lock: Lock) : Thread() {
@@ -83,7 +82,7 @@ class IncThread(val lock: Lock) : Thread() {
 //   inline 키워드
 //    - 함수가 인자로 함수를 전달 받을 때에만 사용할 수 있습니다.
 // inline fun withLock(lock: Lock, block: () -> Unit) {
-inline fun<T> Lock.withLock2(block: () -> T): T {
+inline fun <T> Lock.withLock2(block: () -> T): T {
     lock()
     try {
         return block()
@@ -92,15 +91,33 @@ inline fun<T> Lock.withLock2(block: () -> T): T {
     }
 }
 
+// Generic: 타입에 독립적인 구현을 제공할 때 사용한다
+/*
+fun print2(a: Int) {
+    println(a)
+}
+fun print2(a: String) {
+    println(a)
+}
+fun print2(a: Double) {
+    println(a)
+}
+*/
+fun <T> print2(a: T) {
+    println(a)
+}
+
 fun main() {
+    print2(42)           // T -> Int
+    print2("hello")      // T -> String
+    print2(3.14)         // T -> Double
+
     val lock = ReentrantLock()
 
     val result = lock.withLock2 {
         42
     }
     println(result)
-
-
 
     val t1 = IncThread(lock)
     val t2 = IncThread(lock)
