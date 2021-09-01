@@ -9,7 +9,6 @@ fun sum2(a: Int, b: Int): Int = a + b
 
 // 인자가 2개인 함수에 대한 커링 버전의 함수를 생성하는 함수
 // : (P1, P2) -> R
-
 fun <P1, R> ((P1) -> R).curried(): (P1) -> () -> R = { p1 ->
     {
         this(p1)
@@ -65,7 +64,6 @@ fun main() {
     fn3()
     fn3()
     fn3()
-
 
     val fn: (User, Int) -> Unit = User::move
 

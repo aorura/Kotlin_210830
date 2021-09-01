@@ -1,7 +1,6 @@
 // 19_인라인.kt
 package ex19
 
-import java.lang.Exception
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
