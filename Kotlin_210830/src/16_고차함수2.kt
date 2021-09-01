@@ -23,6 +23,7 @@ fun filter(data: List<Int>, predicate: Predicate<Int>): List<Int> {
 class EvenPredicate : Predicate<Int> {
     override fun test(e: Int): Boolean = e % 2 == 0
 }
+
 class OddPredicate : Predicate<Int> {
     override fun test(e: Int): Boolean = e % 2 == 1
 }
@@ -31,6 +32,11 @@ fun main() {
     val list = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
     var result = filter(list, EvenPredicate())
     result = filter(list, OddPredicate())
+
+    // 익명의 객체
+    result = filter(list, object : Predicate<Int> {
+        override fun test(e: Int): Boolean = e % 2 == 0
+    })
 
     println(result)
 }
