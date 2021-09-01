@@ -8,6 +8,7 @@ package javasample.ex23;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 
 class SListIterator<E> implements Iterator<E> {
     private SList.Node<E> current;
@@ -71,11 +72,11 @@ class SList<E> implements Iterable<E> {
 
 public class Sample {
     public static void main(String[] args) {
-        // SList<Integer> list = new SList<>();
-        // list.addFront(10);
-        // list.addFront(20);
-        // list.addFront(30);
-        List<Integer> list = Arrays.asList(10, 20, 30);
+        SList<Integer> list = new SList<>();
+        list.addFront(10);
+        list.addFront(20);
+        list.addFront(30);
+        // List<Integer> list = Arrays.asList(10, 20, 30);
 
         // System.out.println(list.front());
         Iterator<Integer> iterator = list.iterator();
@@ -88,6 +89,25 @@ public class Sample {
         for (Integer e : list) {
             System.out.println(e);
         }
+
+        // Java 8부터
+        // 많은 새로운 기능이 인터페이스의 기본 메소드를 통해
+        // 제공됩니다.
+        list.forEach(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) {
+                System.out.println(integer);
+            }
+        });
+
+        // Java 8에서는 함수형 인터페이스에 대해서
+        // 람다표현식을 사용할 수 있습니다.
+        list.forEach(integer -> System.out.println(integer));
+
+        // 메소드 레퍼런스도 지원합니다.
+        list.forEach(System.out::println);
+
+
 
     }
 }
