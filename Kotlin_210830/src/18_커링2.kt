@@ -35,6 +35,7 @@ fun log(level: Level, appendable: Appendable, message: String) {
         "[${level.name}][${LocalDateTime.now()}]: $message"
     )
 }
+
 //----
 // 2. 이미지 프로세스 라이브러리
 fun processImage(logger: (message: String) -> Unit) {
@@ -43,7 +44,20 @@ fun processImage(logger: (message: String) -> Unit) {
     logger("이미지 프로세싱 완료")
 }
 
+class User {
+    fun move(position: Int) {
+        println("User - move($position)")
+    }
+}
+
 fun main() {
+    val fn: (User, Int) -> Unit = User::move
+
+    // Bound Reference 원리
+    val user = User()
+    val fn2: (Int) -> Unit = User::move.curried()(user)
+    fn2(42)
+
     log(Level.INFO, System.out, "Main 시작")
 
     // 1. 람다 표현식
