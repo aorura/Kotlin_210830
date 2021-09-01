@@ -20,6 +20,8 @@ class SampleDelegate<T>(
 }
 
 // SampleDelegate를 생성하는 함수를 제공합니다.
+// 1) 직관적인 이름을 통해 제공할 수 있다.
+// 2) 생성되는 객체를 기존 코드의 수정없이 적용할 수 있다.
 fun <T> observable(
     value: T,
     onValueChanged: ((old: T, new: T) -> Unit)? = null
