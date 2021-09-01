@@ -18,16 +18,15 @@ fun filter(data: List<Int>, test: (Int) -> Boolean): List<Int> {
 // 정책으로 함수를 제공합니다.
 //  : (Int) -> Boolean
 fun isOdd(e: Int): Boolean = e % 2 == 1
-
+fun isEven(e: Int): Boolean = e % 2 == 0
 
 fun main() {
     val list = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
     // val result = filter(list, ::isOdd)
 
-
     // 1. 지역 함수
     fun isEven(e: Int): Boolean = e % 2 == 0
-    // val result = filter(list, isEven)
+    val result2 = filter(list, ::isEven)
 
     // 2. 익명 함수
     var result = filter(list,
@@ -59,7 +58,7 @@ fun main() {
     result = filter(list) {
         it % 2 == 0
     }
-    
+
 
     println(result)
 }
