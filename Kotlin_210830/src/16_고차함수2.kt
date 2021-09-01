@@ -2,7 +2,7 @@
 package ex16_2
 
 // 변해야 하는 정책을 인터페이스 기반으로 분리합니다.
-interface Predicate<E> {
+fun interface Predicate<E> {
     fun test(e: E): Boolean
 }
 
@@ -37,6 +37,7 @@ fun main() {
     result = filter(list, object : Predicate<Int> {
         override fun test(e: Int): Boolean = e % 2 == 0
     })
+    result = filter(list) { e -> e % 2 == 0 }
 
     println(result)
 }
