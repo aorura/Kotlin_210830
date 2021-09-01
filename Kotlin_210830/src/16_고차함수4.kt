@@ -44,7 +44,6 @@ fun goo(a: Int) {
 // 함수형 프로그래밍 - 핵심 문법
 // 1) 람다 표현식
 // 2) 클로저
-
 fun main() {
     val isEven = modulo(2, 0)
 
