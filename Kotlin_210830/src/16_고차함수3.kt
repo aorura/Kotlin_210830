@@ -67,9 +67,27 @@ fun main() {
     val fn: (Int) -> Double = { e: Int ->
         e.toDouble()
     }
-
     println(fn(32))
-    
+
+    // 8. 수신 객체 타입 지정도 가능합니다.
+    //  => 메소드처럼 사용할 수 있습니다.
+    fun goo1(block: (String) -> Int) {
+        val length = block("hello")
+        println("goo: $length")
+    }
+    goo1 { text: String ->
+        text.length
+    }
+
+    fun goo2(block: String.() -> Int) {
+        val length = "hello".block()
+        // val length = block("hello")
+        println("goo: $length")
+    }
+    goo2 {
+        length
+    }
+
     println(result)
 }
 
