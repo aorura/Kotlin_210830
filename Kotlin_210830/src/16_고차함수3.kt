@@ -23,7 +23,8 @@ fun isEven(e: Int): Boolean = e % 2 == 0
 
 fun main() {
     val list = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-    val result = filterEven(list)
+    // val result = filter(list, ::isOdd)
+    val result = filter(list, ::isEven)
 
     println(result)
 }
