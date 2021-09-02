@@ -162,7 +162,7 @@ class ListFragment2 : Fragment(R.layout.list_fragment) {
 
     override fun onStart() {
         super.onStart()
-        val binding = binding ?: return
+        // val binding = binding ?: return
         val context = context ?: return
 
         with(binding.recyclerView) {
