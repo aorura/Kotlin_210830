@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
 import com.lge.sampleapp.databinding.ActivityMainBinding
@@ -94,6 +97,25 @@ class FragmentViewBindingDelegate<T: ViewBinding>(
 ) {
     private var binding: T? = null
 
+    init {
+        // owner: 관찰을 언제까지 할것인가?
+        //        프래그먼트가 유효할 때까지 관찰을 수행하겠다.
+        fragment.viewLifecycleOwnerLiveData.observe(fragment) { viewLifeCycleOwner ->
+
+            // viewLifeCycleOwner - 뷰의 생애주기에 대한 관찰이 가능합니다.
+            viewLifeCycleOwner.lifecycle.addObserver(object : LifecycleObserver {
+
+                @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+                fun onDestroy() {
+                    binding = null
+                }
+            })
+
+
+        }
+    }
+
+
     operator fun getValue(thisRef: Fragment, property: KProperty<*>): T {
         binding?.let { return it }
 
@@ -154,8 +176,10 @@ class ListFragment2 : Fragment(R.layout.list_fragment) {
         }
     }
 
+    /*
     override fun onDestroyView() {
         super.onDestroyView()
         // binding = null
     }
+    */
 }
