@@ -24,11 +24,12 @@ inline fun <T> Iterable<T>.forEach2(action: (T) -> Unit): Unit {
 // 2. forEach - 람다 표현식
 // 비지역반환은 inline 함수에서만 가능합니다.
 fun lookForAlice2(people: List<Person>) {
-    people.forEach2 { person ->
+    people.forEach2 hello@{ person ->
         if (person.name == "Alice") {
             println("Found!")
-            return             // 지역 반환이 아닌 '비지역반환'을 수행합니다.
+            // return             // 지역 반환이 아닌 '비지역반환'을 수행합니다.
             // return@forEach  // 지역 반환이 수행됩니다.
+            return@hello
         }
     }
 
