@@ -29,6 +29,7 @@ class MainActivity2 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
+
         // 액티비티가 최초에 실행되었을 때
         if (savedInstanceState == null) {
             // val fragment = MainFragment()
@@ -260,7 +261,7 @@ class UserListAdapter : RecyclerView.Adapter<UserItemViewHolder>() {
         // * inflate + bind
         // val binding = UserListItemBinding.inflate(inflater, parent, false)
         // return UserItemViewHolder(binding)
-        
+
         // * bind
         val binding = UserListItemBinding.bind(view)
         return UserItemViewHolder(binding)
