@@ -113,13 +113,14 @@ class MainFragment : Fragment() {
 
 // Binding 객체를 사용하는 방법
 // 1. inflate + bind
-//        _binding = MainFragmentBinding.inflate(
-//            inflater,
-//            container,
-//            false
-//        )
+//  _binding = MainFragmentBinding.inflate(
+//    inflater,
+//    container,
+//    false
+//  )
 
 // 2. bind
+//   binding = MainFragmentBinding.bind(view)
 
 // 부모의 생성자의 인자로 전달한 레이아웃 아이디에 대한 인플레이팅 처리가
 // 되기 때문에, 굳이 onCreateView를 만들 필요가 없습니다.
