@@ -5,6 +5,8 @@ package ex19
 
 // 'inline' modifier is deprecated. Use 'value' instead
 // Value classes without @JvmInline annotation are not supported yet
+// Inline class must have exactly one primary constructor parameter
+
 @JvmInline
 value class Password(val s: String)
 
