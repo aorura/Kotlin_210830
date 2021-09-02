@@ -124,6 +124,7 @@ class MainFragment : Fragment() {
 //    container,
 //    false
 //  )
+// _binding.root : 실제 인플레이팅된 View
 
 // 2. bind
 //   binding = MainFragmentBinding.bind(view)
@@ -241,7 +242,8 @@ class UserItemViewHolder(private val binding: UserListItemBinding) :
     fun bind(user: User) {
         with(binding) {
             nameTextView.text = user.name
-            ageTextView.text = "${user.age}"
+            // ageTextView.text = "${user.age}"
+            ageTextView.text = user.age.toString()
         }
     }
 }
@@ -251,8 +253,16 @@ class UserListAdapter : RecyclerView.Adapter<UserItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
+        val view = inflater.inflate(
+            R.layout.user_list_item, parent, false
+        )
 
-        val binding = UserListItemBinding.inflate(inflater, parent, false)
+        // * inflate + bind
+        // val binding = UserListItemBinding.inflate(inflater, parent, false)
+        // return UserItemViewHolder(binding)
+        
+        // * bind
+        val binding = UserListItemBinding.bind(view)
         return UserItemViewHolder(binding)
     }
 
@@ -262,6 +272,7 @@ class UserListAdapter : RecyclerView.Adapter<UserItemViewHolder>() {
 
     override fun getItemCount(): Int = items.count()
 }
+
 
 
 
