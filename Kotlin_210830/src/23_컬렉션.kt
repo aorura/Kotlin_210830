@@ -50,6 +50,11 @@ fun main() {
     for (e in list) {
         println(e)
     }
+
+    // 코틀린은 '확장 함수'를 통해 많은 기능이 제공됩니다.
+
+
+
 }
 
 

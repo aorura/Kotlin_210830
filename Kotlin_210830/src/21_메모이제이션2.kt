@@ -21,10 +21,15 @@ data class User(
     }
 }
 
+// OCP(Open-Close Principle)
+// : 개방 폐쇄의 원칙
+// => 수정에는 닫혀있고, 확장에는 열려 있어야 한다.
+// => 새로운 기능이 추가되어도 기존 코드는 수정되면 안된다.
+
 // 기존 함수에 메모이제이션의 기능을 추가된 함수를 만드는 함수를 만듭니다.
 //  (User) -> String
-fun ((User) -> String).memoized(): (User) -> String {
-    val cache = mutableMapOf<User, String>()
+fun <P, R> ((P) -> R).memoized(): (P) -> R {
+    val cache = mutableMapOf<P, R>()
     return { k ->
         cache.getOrPut(k) {
             this(k)
