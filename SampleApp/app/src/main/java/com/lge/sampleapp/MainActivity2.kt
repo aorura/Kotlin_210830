@@ -143,6 +143,9 @@ class MainFragment : Fragment(R.layout.main_fragment) {
     }
 }
 
+class ListFragment : Fragment(R.layout.list_fragment) {
+
+}
 
 
 
