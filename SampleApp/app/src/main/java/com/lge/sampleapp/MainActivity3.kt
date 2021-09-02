@@ -110,15 +110,13 @@ class FragmentViewBindingDelegate<T : ViewBinding>(
             // viewLifeCycleOwner - 뷰의 생애주기에 대한 관찰이 가능합니다.
             viewLifeCycleOwner.lifecycle.addObserver(object : LifecycleObserver {
                 @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-                fun onDestroy() {
-                    Log.i(TAG, "onDestroy")
+                fun onDestroyView() {
+                    Log.i(TAG, "onDestroyView")
                     binding = null
                 }
             })
-
         }
     }
-
 
     operator fun getValue(thisRef: Fragment, property: KProperty<*>): T {
         binding?.let { return it }
@@ -141,6 +139,9 @@ inline fun <reified T : ViewBinding> Fragment.viewBinding() = FragmentViewBindin
 
 
 class ListFragment2 : Fragment(R.layout.list_fragment) {
+    companion object {
+        const val TAG = "ListFragment2"
+    }
     /*
     private val binding: ListFragmentBinding by FragmentViewBindingDelegate(
         ListFragmentBinding::class.java,
@@ -180,10 +181,16 @@ class ListFragment2 : Fragment(R.layout.list_fragment) {
         }
     }
 
-    /*
+
     override fun onDestroyView() {
         super.onDestroyView()
         // binding = null
+        Log.i(TAG, "onDestroyView")
     }
-    */
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i(TAG, "onDestroy")
+    }
+
 }
