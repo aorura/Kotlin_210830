@@ -17,20 +17,22 @@ class Database {
 fun main() {
     val user = User("Tom", 42)
     //----
+    /*
     val database = Database()
     val query = SQLBuilder()
     query.append("INSERT INTO user(name, age) VALUES ")
     query.append("(${user.name}, ${user.age})")
     val result = database.create(query)
     println(result)
+    */
     //----
-
     val result2 = SQLBuilder()
         .apply {
-            query.append("INSERT INTO user(name, age) VALUES ")
-            query.append("(${user.name}, ${user.age})")
+            append("INSERT INTO user(name, age) VALUES ")
+            append("(${user.name}, ${user.age})")
         }.also {
-            println("Query logging...")
+            println("Query logging...${it}")
+            // it.append("xxx") // !!!!!!!
         }.run {
             val database = Database()
             database.create(this)
