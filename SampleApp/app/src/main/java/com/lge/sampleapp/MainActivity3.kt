@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
 import com.lge.sampleapp.databinding.ActivityMainBinding
 import com.lge.sampleapp.databinding.ListFragmentBinding
+import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 // 코틀린에서 뷰바인딩을 사용하면서 발생하는 보일러플레이트를
@@ -106,7 +108,6 @@ class FragmentViewBindingDelegate<T : ViewBinding>(
         // owner: 관찰을 언제까지 할것인가?
         //        프래그먼트가 유효할 때까지 관찰을 수행하겠다.
         fragment.viewLifecycleOwnerLiveData.observe(fragment) { viewLifeCycleOwner ->
-
             // viewLifeCycleOwner - 뷰의 생애주기에 대한 관찰이 가능합니다.
             viewLifeCycleOwner.lifecycle.addObserver(object : LifecycleObserver {
                 @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
@@ -193,4 +194,28 @@ class ListFragment2 : Fragment(R.layout.list_fragment) {
         Log.i(TAG, "onDestroy")
     }
 
+}
+
+
+inline fun <reified T : ViewBinding> ViewGroup.viewBinding() = ViewBindingDelegate(T::class.java, this)
+
+class ViewBindingDelegate<T : ViewBinding>(
+    private val bindingClass: Class<T>,
+    val view: ViewGroup
+) : ReadOnlyProperty<ViewGroup, T> {
+    private var binding: T? = null
+
+    override fun getValue(thisRef: ViewGroup, property: KProperty<*>): T {
+        binding?.let { return it }
+
+        @Suppress("UNCHECKED_CAST")
+        binding = try {
+            val inflateMethod = bindingClass.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java)
+            inflateMethod.invoke(null, LayoutInflater.from(thisRef.context), thisRef)
+        } catch (e: NoSuchMethodException) {
+            val inflateMethod = bindingClass.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
+            inflateMethod.invoke(null, LayoutInflater.from(thisRef.context), thisRef, true) as T
+        } as T
+        return binding!!
+    }
 }
