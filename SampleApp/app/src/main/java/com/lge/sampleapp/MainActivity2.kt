@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import com.lge.sampleapp.databinding.ListFragmentBinding
 import com.lge.sampleapp.databinding.MainFragmentBinding
 
 // => Single Activity Architecture
@@ -27,7 +29,9 @@ class MainActivity2 : AppCompatActivity() {
 
         // 액티비티가 최초에 실행되었을 때
         if (savedInstanceState == null) {
-            val fragment = MainFragment()
+            // val fragment = MainFragment()
+            val fragment = ListFragment()
+
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragmentContainer, fragment)
                 .commit()
@@ -144,8 +148,86 @@ class MainFragment : Fragment(R.layout.main_fragment) {
 }
 
 class ListFragment : Fragment(R.layout.list_fragment) {
+    private var binding: ListFragmentBinding? = null
 
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = ListFragmentBinding.bind(view)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val binding = binding ?: return
+
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 }
+
+
+// ViewHolder
+// Adapter
+
+class UserItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    /*
+    var nameTextView: TextView
+    var ageTextView: TextView
+    init {
+        nameTextView = view.findViewById(R.id.nameTextView)
+        ageTextView = view.findViewById(R.id.ageTextView)
+    }
+    */
+    private val nameTextView: TextView by lazy {
+        view.findViewById(R.id.nameTextView)
+    }
+
+    private val ageTextView: TextView by lazy {
+        view.findViewById(R.id.ageTextView)
+    }
+
+    fun bind(user: User) {
+        nameTextView.text = user.name
+        ageTextView.text = "${user.age}"
+    }
+}
+
+class UserListAdapter : RecyclerView.Adapter<UserItemViewHolder>() {
+    var items: List<User> = emptyList()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserItemViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val view = inflater.inflate(R.layout.user_list_item, parent, false)
+
+        return UserItemViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: UserItemViewHolder, position: Int) {
+        holder.bind(items[position])
+    }
+
+    override fun getItemCount(): Int = items.count()
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
