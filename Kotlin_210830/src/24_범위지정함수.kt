@@ -1,6 +1,9 @@
 // 24_범위지정함수.kt
 package ex24
 
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
+
 // 1. apply
 // 2. with
 // 3. let
@@ -84,6 +87,7 @@ inline fun <T, R> T.let(block: (T) -> R): R {
     return block(this)
 }
 
+/*
 fun main() {
     val email: String? = null
     val user: User? = null
@@ -98,7 +102,7 @@ fun main() {
     getEmail()?.let { email ->
         sendMail(email)
     }
-    
+
     // val email: String? = getEmail()
     val isSendEmail2: Boolean = if (email != null) {
         sendMail(email)
@@ -110,6 +114,71 @@ fun main() {
         sendMail(it)
     } ?: false
 }
+*/
+
+
+// 4. also
+// - 수신 객체 지정 람다가 수신 객체를 전혀 사용하지 않거나,
+//   수신 객체의 속성을 변경하지 않고 사용하는 경우에 사용합니다.
+
+inline fun <T> T.also(block: (T) -> Unit): T {
+    block(this)
+    return this
+}
+
+class Person(age: Int) {
+    var age: Int = age.also {
+        require(it > 0) // !!
+    }
+}
+
+class Person2(val age: Int) {
+    init {
+        require(age > 0)
+    }
+}
+/*
+fun main() {
+    val person = Person(10)
+}
+*/
+
+fun add(a: Int, b: Int) = a + b
+
+// 5. run
+//  값을 계산하거나, 여러 개의 지역 변수의 범위를 제한하고자 할 때
+//  사용합니다.
+inline fun <R> run(block: () -> R): R {
+    return block()
+}
+fun main() {
+    val a = 10
+    val b = 20
+    val result = add(a, b)
+
+    val result2 = run {
+        val a = 10
+        val b = 20
+        add(a, b)
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
