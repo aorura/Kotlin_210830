@@ -66,6 +66,7 @@ class MainFragment : Fragment() {
 }
 */
 
+/*
 class MainFragment : Fragment() {
 
     private var _binding: MainFragmentBinding? = null
@@ -108,8 +109,38 @@ class MainFragment : Fragment() {
         _binding = null
     }
 }
+*/
 
+// Binding 객체를 사용하는 방법
+// 1. inflate + bind
+//        _binding = MainFragmentBinding.inflate(
+//            inflater,
+//            container,
+//            false
+//        )
 
+// 2. bind
+
+// 부모의 생성자의 인자로 전달한 레이아웃 아이디에 대한 인플레이팅 처리가
+// 되기 때문에, 굳이 onCreateView를 만들 필요가 없습니다.
+class MainFragment : Fragment(R.layout.main_fragment) {
+    private var binding: MainFragmentBinding? = null
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // 이미 인플레이팅이 완료되었으므로, bind만 하면 됩니다.
+        binding = MainFragmentBinding.bind(view)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null       // !!!
+    }
+}
 
 
 
