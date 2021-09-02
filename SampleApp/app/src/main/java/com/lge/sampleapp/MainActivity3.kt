@@ -2,6 +2,7 @@ package com.lge.sampleapp
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -91,11 +92,15 @@ class MainActivity3 : AppCompatActivity() {
 }
 
 // FragmentViewBindingDelegate
-class FragmentViewBindingDelegate<T: ViewBinding>(
+class FragmentViewBindingDelegate<T : ViewBinding>(
     private val bindingClass: Class<T>,
     val fragment: Fragment
 ) {
     private var binding: T? = null
+
+    companion object {
+        const val TAG = "FragmentViewBindingDelegate"
+    }
 
     init {
         // owner: 관찰을 언제까지 할것인가?
@@ -104,13 +109,12 @@ class FragmentViewBindingDelegate<T: ViewBinding>(
 
             // viewLifeCycleOwner - 뷰의 생애주기에 대한 관찰이 가능합니다.
             viewLifeCycleOwner.lifecycle.addObserver(object : LifecycleObserver {
-
                 @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
                 fun onDestroy() {
+                    Log.i(TAG, "onDestroy")
                     binding = null
                 }
             })
-
 
         }
     }
@@ -130,7 +134,7 @@ class FragmentViewBindingDelegate<T: ViewBinding>(
     }
 }
 
-inline fun <reified T: ViewBinding> Fragment.viewBinding() = FragmentViewBindingDelegate(
+inline fun <reified T : ViewBinding> Fragment.viewBinding() = FragmentViewBindingDelegate(
     T::class.java,
     this
 )
