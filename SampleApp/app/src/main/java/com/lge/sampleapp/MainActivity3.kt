@@ -3,9 +3,13 @@ package com.lge.sampleapp
 import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
 import com.lge.sampleapp.databinding.ActivityMainBinding
+import com.lge.sampleapp.databinding.ListFragmentBinding
 import kotlin.reflect.KProperty
 
 // 코틀린에서 뷰바인딩을 사용하면서 발생하는 보일러플레이트를
@@ -41,30 +45,117 @@ class ActivityBindingDelegate<T : ViewBinding>(
     }
 }
 
+/*
+inline fun <reified T : ViewBinding> Activity.viewBinding(): ActivityBindingDelegate<T> {
+    return ActivityBindingDelegate(
+        T::class.java,
+        this
+    )
+}
+*/
+inline fun <reified T : ViewBinding> Activity.viewBinding() = ActivityBindingDelegate(
+    T::class.java,
+    this
+)
 
 class MainActivity3 : AppCompatActivity() {
-
+    private val binding: ActivityMainBinding by viewBinding()
+    /*
     private val binding: ActivityMainBinding by ActivityBindingDelegate(
         ActivityMainBinding::class.java,
         this
     )
+    */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // setContentView(R.layout.activity_main)
+        setContentView(R.layout.main_activity)
+        /*
         // binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.button.setOnClickListener {
             binding.textView.text = "Hello"
         }
+        */
+        if (savedInstanceState == null) {
+            val fragment = ListFragment2()
+
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, fragment)
+                .commit()
+        }
+    }
+}
+
+// FragmentViewBindingDelegate
+class FragmentViewBindingDelegate<T: ViewBinding>(
+    private val bindingClass: Class<T>,
+    val fragment: Fragment
+) {
+    private var binding: T? = null
+
+    operator fun getValue(thisRef: Fragment, property: KProperty<*>): T {
+        binding?.let { return it }
+
+        // 프래그먼트에서 뷰 바인딩을 사용할 때
+        // bind(View) - 메소드를 찾습니다.
+        val bindMethod = bindingClass.getMethod("bind", View::class.java)
+
+        @Suppress("UNCHECKED_CAST")
+        binding = bindMethod.invoke(null, thisRef.requireView()) as T
+        // thisRef.requireView() - 프래그먼트에 인플레이팅된 뷰가 존재하지 않으면 IllegalStateException이 발생합니다.
+        return binding!!
+    }
+}
+
+inline fun <reified T: ViewBinding> Fragment.viewBinding() = FragmentViewBindingDelegate(
+    T::class.java,
+    this
+)
 
 
-//        if (savedInstanceState == null) {
-//            val fragment = ListFragment()
-//
-//            supportFragmentManager.beginTransaction()
-//                .add(R.id.fragmentContainer, fragment)
-//                .commit()
-//        }
+class ListFragment2 : Fragment(R.layout.list_fragment) {
+    /*
+    private val binding: ListFragmentBinding by FragmentViewBindingDelegate(
+        ListFragmentBinding::class.java,
+        this
+    )
+    */
+    private val binding: ListFragmentBinding by viewBinding()
+
+    /*
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = ListFragmentBinding.bind(view)
+    }
+    */
+
+    override fun onStart() {
+        super.onStart()
+        val binding = binding ?: return
+        val context = context ?: return
+
+        with(binding.recyclerView) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = UserListAdapter().apply {
+                items = listOf(
+                    User("Tom", 42),
+                    User("Bob", 42),
+                    User("Alice", 42),
+                    User("Tim", 42),
+                    User("David", 42),
+                    User("Tom", 42),
+                    User("Tom", 42),
+                )
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // binding = null
     }
 }
