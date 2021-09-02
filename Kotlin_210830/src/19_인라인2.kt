@@ -5,6 +5,7 @@ package ex19_2
 // 1) 함수가 인자를 함수로 받을 경우
 // 2) reified Generic
 
+
 // Android
 // val intent = Intent(this, MainActivity::class.java)
 // startActivity(intent)
