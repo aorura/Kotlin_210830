@@ -9,6 +9,7 @@ import coil.transform.CircleCropTransformation
 import coil.transform.GrayscaleTransformation
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
+import com.jakewharton.rxbinding4.view.clicks
 import com.lge.sampleapp.databinding.MainActivity5Binding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -27,6 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.util.concurrent.TimeUnit
 
 // RxJava / RxKotlin / RxAndroid
 // => 의존성 추가
@@ -37,6 +39,14 @@ import retrofit2.http.Query
 // => Retrofit은 Call을 Observable로 변경해서 사용할 수 있는 기능을 제공합니다.
 // => Call Adapter
 // implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+
+// UI의 이벤트에 대한 처리도 Rx를 통해 처리하고 싶다면,
+//  => rxbinding
+// implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
+// implementation 'com.jakewharton.rxbinding4:rxbinding-core:4.0.0'
+// implementation 'com.jakewharton.rxbinding4:rxbinding-appcompat:4.0.0'
+// implementation 'com.jakewharton.rxbinding4:rxbinding-material:4.0.0'
+
 
 // Reactive eXtension
 // : 비동기의 연산을 컬렉션을 다루는 일반적인 연산처럼 처리할 수 있습니다.
@@ -119,6 +129,13 @@ class MainActivity7 : AppCompatActivity() {
         }
     }
 
+    var disposable: Disposable? = null
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable?.dispose()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -126,7 +143,40 @@ class MainActivity7 : AppCompatActivity() {
         // binding.loadButton.setOnClickListener(this::onLoadButtonClicked1)
         // binding.loadButton.setOnClickListener(this::onLoadButtonClicked2)
         // binding.loadButton.setOnClickListener(this::onLoadButtonClicked3)
-        binding.loadButton.setOnClickListener(this::onLoadButtonClicked4)
+        // binding.loadButton.setOnClickListener(this::onLoadButtonClicked4)
+
+        // 화면이 종료되는 시점에, 이벤트 스트림에 대한 종료 처리가 필요합니다.
+        disposable = binding.loadButton.clicks() // Observable<Unit>
+            .throttleFirst(1, TimeUnit.SECONDS)
+            // Observable<Unit> -> flatMap -> Observable<GithubUser>
+            // .flatMap {
+            //    githubApi.searchUsersRx("hello")
+            // }
+            .switchMap {
+                githubApi.searchUsersRx("hello")
+            }
+            .filter { response ->
+                response.items.isNotEmpty()
+            }
+            .map { response ->
+                response.items.shuffled().first().login
+            }
+            .doOnDispose {
+                Log.i(TAG, "onDispose")
+            }
+            .flatMap(githubApi::fetchUserRx)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = { user ->
+                    this.update(user)
+                    Log.i(TAG, "onNext: ${user.login}")
+                },
+                onError = { t ->
+                    Log.e(TAG, "onError: ${t.localizedMessage}", t)
+                },
+                onComplete = {
+                    Log.i(TAG, "onComplete")
+                })
     }
 
     fun fetchUserRx(login: String): Observable<GithubUser> {
@@ -212,7 +262,6 @@ class MainActivity7 : AppCompatActivity() {
     private fun onLoadButtonClicked3(view: View) {
         val aUserObservable = githubApi.fetchUserRx("Google")
         val bUserObservable = githubApi.fetchUserRx("Apple")
-
         // zip
         /*
         Observable
