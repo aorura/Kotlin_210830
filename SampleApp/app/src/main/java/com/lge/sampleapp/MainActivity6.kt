@@ -40,6 +40,7 @@ data class SearchResponse(
 
 // Retrofit 사용 방법
 // 1. 인터페이스를 정의합니다.
+/*
 interface GithubApi {
     @GET("/users/{login}")
     fun fetchUser(@Path("login") login: String): Call<GithubUser>
@@ -47,6 +48,7 @@ interface GithubApi {
     @GET("/search/users")
     fun searchUsers(@Query("q") query: String): Call<SearchResponse>
 }
+
 
 // 2. Retrofit 객체 생성
 val retrofit: Retrofit = Retrofit.Builder().apply {
@@ -58,7 +60,7 @@ val retrofit: Retrofit = Retrofit.Builder().apply {
     addConverterFactory(GsonConverterFactory.create(gson))
 
 }.build()
-
+ */
 // 3. 요청을 처리하는 객체를 생성
 val githubApi: GithubApi = retrofit.create(GithubApi::class.java)
 
