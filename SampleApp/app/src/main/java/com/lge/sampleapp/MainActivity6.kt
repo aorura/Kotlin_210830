@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import coil.load
+import coil.transform.CircleCropTransformation
+import coil.transform.GrayscaleTransformation
 import com.bumptech.glide.Glide
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
@@ -69,6 +72,35 @@ val githubApi: GithubApi = retrofit.create(GithubApi::class.java)
 //   kapt 'com.github.bumptech.glide:compiler:4.12.0'
 //  => 컴파일 타임에 어노테이션을 기반으로 코드를 생성하는 기술
 
+// => coil-kt
+//  implementation 'io.coil-kt:coil:1.3.2'
+// '콜백' 문제점
+//  => 실행 흐름 제어가 어렵다.
+//   동기:
+//    val ra = a()
+//    val rb = b(ra)
+//    val rc = c(rb)
+//    // ...
+//  비동기:
+//    a({ ra ->
+//       b(ra) { rb ->
+//         c(rb) {
+//            // ...
+//         }
+//       }
+//    })
+//
+// 콜백 문제점 해결 방법
+// 1) LiveData - Android
+//   : 간단하고 직관적으로 사용할 수 있습니다.
+//   => 제공하는 기능이 거의 없습니다.
+// 2) RxJava / RxKotlin
+//   : 비동기에 대한 처리를 효과적으로 수행할 수 있는 다양한 방법을 제공합니다.
+//  => 러닝 커브가 있습니다.
+//---------------------
+// 3) Coroutine
+
+
 class MainActivity6 : AppCompatActivity() {
     private val binding: MainActivity5Binding by viewBinding()
 
@@ -81,10 +113,22 @@ class MainActivity6 : AppCompatActivity() {
             nameTextView.text = user.name
             loginTextView.text = user.login
 
+            /*
             Glide.with(this@MainActivity6)
                 .load(user.avatarUrl)
                 .circleCrop()
                 .into(profileImageView)
+            */
+
+            // coil
+            // - Extension Function
+            profileImageView.load(user.avatarUrl) {
+                crossfade(500)
+                transformations(
+                    CircleCropTransformation(),
+                    GrayscaleTransformation(),
+                )
+            }
         }
     }
 
@@ -102,22 +146,27 @@ class MainActivity6 : AppCompatActivity() {
 
                         val result = response.body() ?: return@enqueue
 
-                        result.items
+                        val firstUserLogin = result.items
                             .shuffled()
-                            .firstOrNull()?.let(this::update)
-
-                        /*
-                        Toast.makeText(
-                            this,
-                            "search counts: ${result.totalCount}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        */
+                            .firstOrNull()?.login ?: return@enqueue
 
 
+                        githubApi.fetchUser(firstUserLogin)
+                            .enqueue(
+                                onResponse = inner@{ responseUser ->
+                                    if (!responseUser.isSuccessful)
+                                        return@inner
+
+                                    val user = responseUser.body() ?: return@inner
+                                    update(user)
+                                },
+                                onFailure = { t ->
+                                    Log.e(MainActivity5.TAG, t.localizedMessage, t)
+                                }
+                            )
                     },
                     onFailure = { t ->
-
+                        Log.e(MainActivity5.TAG, t.localizedMessage, t)
                     }
                 )
 
