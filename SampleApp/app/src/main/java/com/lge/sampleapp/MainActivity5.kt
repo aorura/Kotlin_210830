@@ -38,12 +38,20 @@ import java.io.IOException
 // implementation("com.squareup.okhttp3:logging-interceptor")
 
 
+// android.os.NetworkOnMainThreadException
+//  => UI 업데이트를 하는 메인 스레드 상에서 네트워크 등의 시간이 걸리는 작업을 수행하는 것이
+//     금지되어 있습니다.
+// java.lang.SecurityException: Permission denied (missing INTERNET permission?)
+//  => AndroidManifest.xml
+//    INTERNET 사용 권한이 필요합니다.
+//    <uses-permission android:name="android.permission.INTERNET"/>
+
 class MainActivity5 : AppCompatActivity() {
     private val binding: MainActivity5Binding by viewBinding()
 
     companion object {
         // const val TAG = "MainActivity5"
-        val TAG = MainActivity5::class.java.simpleName
+        val TAG: String = MainActivity5::class.java.simpleName
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,28 +84,40 @@ class MainActivity5 : AppCompatActivity() {
             val call: Call = httpClient.newCall(request)
             // => 동기로 수행할지 비동기로 수행할지를 결정할 수 있습니다.
 
-            // 4. 동기 수행
-            try {
-                val response: Response = call.execute()
-
-                // val code = response.code
-                // if (code !in 200..299) {
-                //    return@setOnClickListener
-                // }
-
-                if (!response.isSuccessful) {
-                    return@setOnClickListener
+            /*
+            Thread(object: Runnable {
+                override fun run() {
+                    TODO("Not yet implemented")
                 }
+            }).start()
+            */
 
-                val json = response.body?.string() ?: return@setOnClickListener
-                Log.i(TAG, "json: $json")
+            Thread {
+                // 4. 동기 수행
+                try {
+                    val response: Response = call.execute()
 
-            } catch (e: IOException) {
-                // 서버에 접속할 수 없다.
-                // 1) 핸드폰이 인터넷이 되지 않습니다.
-                // 2) 서버가 접속할 수 없는 상태입니다.
-                Log.e(TAG, e.localizedMessage, e)
-            }
+                    // val code = response.code
+                    // if (code !in 200..299) {
+                    //    return@setOnClickListener
+                    // }
+
+                    if (!response.isSuccessful) {
+                        // return@setOnClickListener
+                        return@Thread
+                    }
+
+                    // val json = response.body?.string() ?: return@setOnClickListener
+                    val json = response.body?.string() ?: return@Thread
+                    Log.i(TAG, "json: $json")
+
+                } catch (e: IOException) {
+                    // 서버에 접속할 수 없다.
+                    // 1) 핸드폰이 인터넷이 되지 않습니다.
+                    // 2) 서버가 접속할 수 없는 상태입니다.
+                    Log.e(TAG, e.localizedMessage, e)
+                }
+            }.start()
 
 
         }
