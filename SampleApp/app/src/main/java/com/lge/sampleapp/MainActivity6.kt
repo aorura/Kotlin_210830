@@ -67,8 +67,26 @@ class MainActivity6 : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.loadButton.setOnClickListener {
-            val call: Call<GithubUser> = githubApi.fetchUser("JakeWharton")
 
+            githubApi.fetchUser("JakeWharton")
+                .enqueue(
+                    onResponse = { response ->
+                        if (!response.isSuccessful)
+                            return@enqueue
+
+                        val user = response.body() ?: return@enqueue
+                        Toast.makeText(
+                            this,
+                            "Hello, ${user.name}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    },
+                    onFailure = { t ->
+                        Log.e(MainActivity5.TAG, t.localizedMessage, t)
+                    }
+                )
+            /*
+            val call: Call<GithubUser> = githubApi.fetchUser("JakeWharton")
             call.enqueue(object : Callback<GithubUser> {
                 override fun onResponse(
                     call: Call<GithubUser>,
@@ -92,10 +110,27 @@ class MainActivity6 : AppCompatActivity() {
                     Log.e(MainActivity5.TAG, t.localizedMessage, t)
                 }
             })
+            */
 
         }
-
     }
+}
+
+inline fun <T> Call<T>.enqueue(
+    crossinline onResponse: (response: Response<T>) -> Unit,
+    crossinline onFailure: (t: Throwable) -> Unit
+) {
+    enqueue(object : Callback<T> {
+        override fun onResponse(
+            call: Call<T>,
+            response: Response<T>
+        ) = onResponse(response)
+
+        override fun onFailure(
+            call: Call<T>,
+            t: Throwable
+        ) = onFailure(t)
+    })
 }
 
 
