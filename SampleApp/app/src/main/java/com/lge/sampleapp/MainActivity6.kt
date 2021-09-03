@@ -101,6 +101,10 @@ class MainActivity6 : AppCompatActivity() {
 
                         val result = response.body() ?: return@enqueue
 
+                        result.items
+                            .shuffled()
+                            .firstOrNull()?.let(this::update)
+
                         /*
                         Toast.makeText(
                             this,
