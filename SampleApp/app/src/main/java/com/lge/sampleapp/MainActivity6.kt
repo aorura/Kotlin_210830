@@ -88,7 +88,7 @@ class MainActivity6 : AppCompatActivity() {
                     call: Call<GithubUser>,
                     t: Throwable
                 ) {
-                    Log.e(MainActivity5.TAG, e.localizedMessage, e)
+                    Log.e(MainActivity5.TAG, t.localizedMessage, t)
                 }
             })
 
