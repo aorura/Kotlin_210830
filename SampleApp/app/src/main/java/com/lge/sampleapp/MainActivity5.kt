@@ -98,9 +98,46 @@ class MainActivity5 : AppCompatActivity() {
 
             val call: Call = httpClient.newCall(request)
 
+            // 두개 이상의 람다 표현식을 전달할 때는,
+            // 파라미터 라벨을 지정하는 것이 좋습니다.
+            /*
+            call.enqueue({
+            }, {
+            })
+
+            call.enqueue({}) {}
+            */
+            call.enqueue(
+                onResponse = { response ->
+                    if (!response.isSuccessful)
+                        return@enqueue
+
+                    val json = response.body?.string()
+                    val user = gson.fromJson(json, GithubUser::class.java)
+
+                    Log.i(TAG, "user: $user")
+
+                    runOnUiThread {
+                        Toast.makeText(
+                            this,
+                            "Hello, ${user.name}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                },
+                onFailure = { e ->
+                    Log.e(TAG, e.localizedMessage, e)
+                }
+            )
+
+
+
+
+
             // call.execute() : 동기
             // call.enqueue() : 비동기 - 별도의 스레드에서 수행된다.
             //    - 별도의 스레드에서 수행되는 결과를 콜백을 통해 처리합니다.
+            /*
             call.enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     Log.e(TAG, e.localizedMessage, e)
@@ -124,6 +161,7 @@ class MainActivity5 : AppCompatActivity() {
                     }
                 }
             })
+             */
         }
 
 
@@ -204,3 +242,26 @@ class MainActivity5 : AppCompatActivity() {
 
     }
 }
+
+// OKHttp - Call의 Callback을 사용할 때
+//          람다표현식을 이용하고 싶다.
+//  - 인라인 함수 안에서 다른 함수에서 호출되는 함수가 인라인이 필요합니다.
+inline fun Call.enqueue(
+    crossinline onResponse: (response: Response) -> Unit,
+    crossinline onFailure: (e: IOException) -> Unit
+) {
+    enqueue(object: Callback {
+        override fun onFailure(call: Call, e: IOException) = onFailure(e)
+        override fun onResponse(call: Call, response: Response)
+         = onResponse(response)
+    })
+}
+
+
+
+
+
+
+
+
+
