@@ -12,8 +12,13 @@ import com.google.gson.GsonBuilder
 import com.lge.sampleapp.databinding.MainActivity5Binding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableEmitter
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.kotlin.Observables
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -75,6 +80,9 @@ interface GithubApi {
 
     @GET("/search/users")
     fun searchUsers(@Query("q") query: String): Call<SearchResponse>
+
+    @GET("/search/users")
+    fun searchUsersRx(@Query("q") query: String): Observable<SearchResponse>
 }
 
 
@@ -113,11 +121,34 @@ class MainActivity7 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        binding.loadButton.setOnClickListener(this::onLoadButtonClicked1)
+        // binding.loadButton.setOnClickListener(this::onLoadButtonClicked1)
+        binding.loadButton.setOnClickListener(this::onLoadButtonClicked2)
+    }
+
+    fun fetchUserRx(login: String): Observable<GithubUser> {
+        return Observable.create { emitter: ObservableEmitter<GithubUser> ->
+
+            githubApi.fetchUser(login)
+                .enqueue(object : Callback<GithubUser> {
+                    override fun onResponse(
+                        call: Call<GithubUser>,
+                        response: Response<GithubUser>
+                    ) {
+                        val user = response.body() ?: return
+                        emitter.onNext(user)
+                        emitter.onComplete()
+                    }
+
+                    override fun onFailure(call: Call<GithubUser>, t: Throwable) {
+                        emitter.onError(t)
+                    }
+                })
+        }
     }
 
     private fun onLoadButtonClicked1(view: View) {
-        val observable: Observable<GithubUser> = githubApi.fetchUserRx("JakeWharton")
+        // val observable: Observable<GithubUser> = githubApi.fetchUserRx("JakeWharton")
+        val observable = fetchUserRx("JakeWharton")
 
         // Observable에 구독이 일어나면, 이벤트 스트림이 형성되고, 데이터를 전달 받을 수 있습니다.
         //                    subscribeBy - RxKotlin
@@ -136,6 +167,35 @@ class MainActivity7 : AppCompatActivity() {
                     Log.i(TAG, "onComplete")
                 }
             )
+    }
+
+    private fun onLoadButtonClicked2(view: View) {
+
+        // List<T> -> map -> List<U>
+
+        githubApi.searchUsersRx("hello")  // Observable<SearchResponse>
+            .filter {
+                it.items.isNotEmpty()
+            }
+            // Observable<SearchResponse> -> map -> Observable<String>
+            .map {
+                it.items.shuffled().first().login
+            }
+            // Observable<String> -> map -> Observable< Observable<GithubUser> >
+            // Observable<String> -> flatMap -> Observable<GithubUser>
+            // .flatMap { login ->
+            //    githubApi.fetchUserRx(login)
+            // }
+
+            .flatMap(githubApi::fetchUserRx)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = this::update,
+                onError = {
+
+                }
+            )
+
     }
 }
 
