@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import com.lge.sampleapp.databinding.MainActivity5Binding
@@ -28,7 +29,11 @@ import retrofit2.http.Query
 // 3. 콜백이 UI 스레드에서 수행됩니다.
 // => runOnUiThread가 필요하지 않습니다.
 
-class SearchResponse
+data class SearchResponse(
+    val totalCount: Int,
+    val incompleteResults: Boolean,
+    val items: List<GithubUser>
+)
 
 // Retrofit 사용 방법
 // 1. 인터페이스를 정의합니다.
@@ -54,6 +59,15 @@ val retrofit: Retrofit = Retrofit.Builder().apply {
 // 3. 요청을 처리하는 객체를 생성
 val githubApi: GithubApi = retrofit.create(GithubApi::class.java)
 
+// 이미지 처리를 위한 라이브러리에 대한 의존성 추가
+// => Glide
+//  implementation 'com.github.bumptech.glide:glide:4.12.0'
+//  annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+//   Java: annotationProcessor
+// Kotlin: kapt
+//   kotlin-kapt 플러그인 추가가 필요합니다.
+//   kapt 'com.github.bumptech.glide:compiler:4.12.0'
+//  => 컴파일 타임에 어노테이션을 기반으로 코드를 생성하는 기술
 
 class MainActivity6 : AppCompatActivity() {
     private val binding: MainActivity5Binding by viewBinding()
@@ -62,12 +76,57 @@ class MainActivity6 : AppCompatActivity() {
         val TAG: String = MainActivity6::class.java.simpleName
     }
 
+    private fun update(user: GithubUser) {
+        with(binding) {
+            nameTextView.text = user.name
+            loginTextView.text = user.login
+
+            Glide.with(this@MainActivity6)
+                .load(user.avatarUrl)
+                .into(profileImageView)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         binding.loadButton.setOnClickListener {
+            githubApi.searchUsers("hello")
+                .enqueue(
+                    onResponse = { response ->
+                        if (!response.isSuccessful) {
+                            return@enqueue
+                        }
 
+                        val result = response.body() ?: return@enqueue
+
+                        /*
+                        Toast.makeText(
+                            this,
+                            "search counts: ${result.totalCount}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        */
+
+
+                    },
+                    onFailure = { t ->
+
+                    }
+                )
+
+
+        }
+
+    }
+
+    /*
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
+
+        binding.loadButton.setOnClickListener {
             githubApi.fetchUser("JakeWharton")
                 .enqueue(
                     onResponse = { response ->
@@ -113,6 +172,7 @@ class MainActivity6 : AppCompatActivity() {
             */
         }
     }
+    */
 }
 
 inline fun <T> Call<T>.enqueue(
