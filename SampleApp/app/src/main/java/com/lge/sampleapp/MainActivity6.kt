@@ -83,6 +83,7 @@ class MainActivity6 : AppCompatActivity() {
 
             Glide.with(this@MainActivity6)
                 .load(user.avatarUrl)
+                .circleCrop()
                 .into(profileImageView)
         }
     }
