@@ -130,10 +130,6 @@ class MainActivity5 : AppCompatActivity() {
                 }
             )
 
-
-
-
-
             // call.execute() : 동기
             // call.enqueue() : 비동기 - 별도의 스레드에서 수행된다.
             //    - 별도의 스레드에서 수행되는 결과를 콜백을 통해 처리합니다.
