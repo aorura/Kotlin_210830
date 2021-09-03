@@ -101,13 +101,27 @@ class MainActivity5 : AppCompatActivity() {
             // call.execute() : 동기
             // call.enqueue() : 비동기 - 별도의 스레드에서 수행된다.
             //    - 별도의 스레드에서 수행되는 결과를 콜백을 통해 처리합니다.
-            call.enqueue(object: Callback {
+            call.enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     Log.e(TAG, e.localizedMessage, e)
                 }
 
                 override fun onResponse(call: Call, response: Response) {
+                    if (!response.isSuccessful)
+                        return
 
+                    val json = response.body?.string()
+                    val user = gson.fromJson(json, GithubUser::class.java)
+
+                    Log.i(TAG, "user: $user")
+
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@MainActivity5,
+                            "Hello, ${user.name}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             })
         }
