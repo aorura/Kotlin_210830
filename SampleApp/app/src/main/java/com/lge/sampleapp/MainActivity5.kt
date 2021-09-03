@@ -2,7 +2,11 @@ package com.lge.sampleapp
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.FieldNamingPolicy
+import com.google.gson.GsonBuilder
+import com.google.gson.annotations.SerializedName
 import com.lge.sampleapp.databinding.MainActivity5Binding
 import okhttp3.Call
 import okhttp3.OkHttpClient
@@ -45,6 +49,28 @@ import java.io.IOException
 //  => AndroidManifest.xml
 //    INTERNET 사용 권한이 필요합니다.
 //    <uses-permission android:name="android.permission.INTERNET"/>
+// Can't toast on a thread that has not called Looper.prepare()
+//  => UI 업데이트는 UI 스레드에서만 가능합니다.
+
+
+// Gson을 이용해서 응답 받은 JSON을 객체로 변환해서 사용해야 합니다.
+// => 의존성 추가
+
+// Gson은 리플레션을 이용해서, 클래스 안에서 동일한 이름을 가지는 프로퍼티의 값을 변경하는 형태로 동작합니다.
+// => 이름의 형식이 다를 경우 해결하는 방법.
+// 1) @field:SerializedName("avatar_url")
+// 2) GsonBuilder에서 이름 규칙에 대한 설정이 가능합니다.
+//    setFieldNamingPolicy
+// > 코틀린의 공식 라이브러리로 JSON Serialization / Deserialization을 지원합니다.
+//   Experimental
+data class GithubUser(
+    val login: String,
+    val id: Int,
+    // @field:SerializedName("avatar_url")
+    val avatarUrl: String,
+    val name: String,
+    val email: String?
+)
 
 class MainActivity5 : AppCompatActivity() {
     private val binding: MainActivity5Binding by viewBinding()
@@ -110,6 +136,17 @@ class MainActivity5 : AppCompatActivity() {
                     // val json = response.body?.string() ?: return@setOnClickListener
                     val json = response.body?.string() ?: return@Thread
                     Log.i(TAG, "json: $json")
+
+                    val gson = GsonBuilder().apply {
+                        setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                    }.create()
+
+                    val user: GithubUser = gson.fromJson(json, GithubUser::class.java)
+                    Log.i(TAG, "user: $user")
+
+                    runOnUiThread {
+                        Toast.makeText(this, "Hello, ${user.name}", Toast.LENGTH_SHORT).show()
+                    }
 
                 } catch (e: IOException) {
                     // 서버에 접속할 수 없다.
