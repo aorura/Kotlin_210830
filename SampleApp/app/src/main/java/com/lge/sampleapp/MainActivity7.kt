@@ -16,6 +16,8 @@ import io.reactivex.rxjava3.core.ObservableEmitter
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.Observables
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -122,7 +124,9 @@ class MainActivity7 : AppCompatActivity() {
         setContentView(binding.root)
 
         // binding.loadButton.setOnClickListener(this::onLoadButtonClicked1)
-        binding.loadButton.setOnClickListener(this::onLoadButtonClicked2)
+        // binding.loadButton.setOnClickListener(this::onLoadButtonClicked2)
+        // binding.loadButton.setOnClickListener(this::onLoadButtonClicked3)
+        binding.loadButton.setOnClickListener(this::onLoadButtonClicked4)
     }
 
     fun fetchUserRx(login: String): Observable<GithubUser> {
@@ -170,9 +174,7 @@ class MainActivity7 : AppCompatActivity() {
     }
 
     private fun onLoadButtonClicked2(view: View) {
-
         // List<T> -> map -> List<U>
-
         githubApi.searchUsersRx("hello")  // Observable<SearchResponse>
             .filter {
                 it.items.isNotEmpty()
@@ -186,7 +188,6 @@ class MainActivity7 : AppCompatActivity() {
             // .flatMap { login ->
             //    githubApi.fetchUserRx(login)
             // }
-
             .flatMap(githubApi::fetchUserRx)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -197,8 +198,60 @@ class MainActivity7 : AppCompatActivity() {
             )
 
     }
-}
 
+
+    // 동기
+    //  aUser = fetchUser(a)
+    //  bUser = fetchUser(b)
+    //   - id가 더 작은 사람의 정보를 화면에 출력하고 싶다.
+    //  if (aUser.id > bUser.id)
+    //    update(bUser)
+    //  else
+    //    update(aUser)
+
+    private fun onLoadButtonClicked3(view: View) {
+        val aUserObservable = githubApi.fetchUserRx("Google")
+        val bUserObservable = githubApi.fetchUserRx("Apple")
+
+        // zip
+        /*
+        Observable
+            .zip(aUserObservable, bUserObservable, { aUser: GithubUser, bUser: GithubUser ->
+                if (aUser.id > bUser.id)
+                    bUser
+                else
+                    aUser
+            })
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(onNext = this::update)
+        */
+
+        // merge - 두 개이상의 Observable을 하나의 이벤트 스트림을 통해 처리할 수 있습니다.
+        Observable.merge(aUserObservable, bUserObservable)
+            .doOnNext {
+                Log.i(TAG, "doOnNext")
+            }
+            .doOnComplete {
+                Log.i(TAG, "doOnComplete")
+            }
+            .doOnSubscribe {
+                Log.i(TAG, "doOnSubscribe")
+            }
+            .subscribeBy(
+                onNext = { user ->
+                    Log.i(TAG, "onNext: $user")
+                },
+                onComplete = {
+                    Log.i(TAG, "onComplete")
+                }
+            )
+    }
+
+    private fun onLoadButtonClicked4(view: View) {
+        Log.i(TAG, "onLoadButtonClicked4")
+    }
+
+}
 
 
 
