@@ -1,6 +1,7 @@
 package com.lge.sampleapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
@@ -10,6 +11,7 @@ import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import com.lge.sampleapp.databinding.MainActivity5Binding
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
@@ -114,6 +116,22 @@ class MainActivity7 : AppCompatActivity() {
 
     private fun onLoadButtonClicked1(view: View) {
         val observable: Observable<GithubUser> = githubApi.fetchUserRx("JakeWharton")
+
+        // Observable에 구독이 일어나면, 이벤트 스트림이 형성되고, 데이터를 전달 받을 수 있습니다.
+        // subscribeBy - RxKotlin
+        observable.subscribeBy(
+            onNext = {
+                Log.i(TAG, "onNext")
+            },
+            onError = {
+                Log.i(TAG, "onError")
+            },
+            onComplete = {
+                Log.i(TAG, "onComplete")
+            }
+        )
+
+
     }
 }
 
