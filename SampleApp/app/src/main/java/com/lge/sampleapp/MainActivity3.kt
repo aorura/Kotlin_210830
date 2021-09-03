@@ -1,12 +1,14 @@
 package com.lge.sampleapp
 
 import android.app.Activity
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.location.LocationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -76,6 +78,7 @@ class MainActivity3 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
+
         /*
         // binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -143,6 +146,7 @@ class ListFragment2 : Fragment(R.layout.list_fragment) {
     companion object {
         const val TAG = "ListFragment2"
     }
+
     /*
     private val binding: ListFragmentBinding by FragmentViewBindingDelegate(
         ListFragmentBinding::class.java,
@@ -197,7 +201,8 @@ class ListFragment2 : Fragment(R.layout.list_fragment) {
 }
 
 
-inline fun <reified T : ViewBinding> ViewGroup.viewBinding() = ViewBindingDelegate(T::class.java, this)
+inline fun <reified T : ViewBinding> ViewGroup.viewBinding() =
+    ViewBindingDelegate(T::class.java, this)
 
 class ViewBindingDelegate<T : ViewBinding>(
     private val bindingClass: Class<T>,
@@ -210,10 +215,16 @@ class ViewBindingDelegate<T : ViewBinding>(
 
         @Suppress("UNCHECKED_CAST")
         binding = try {
-            val inflateMethod = bindingClass.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java)
+            val inflateMethod =
+                bindingClass.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java)
             inflateMethod.invoke(null, LayoutInflater.from(thisRef.context), thisRef)
         } catch (e: NoSuchMethodException) {
-            val inflateMethod = bindingClass.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
+            val inflateMethod = bindingClass.getMethod(
+                "inflate",
+                LayoutInflater::class.java,
+                ViewGroup::class.java,
+                Boolean::class.java
+            )
             inflateMethod.invoke(null, LayoutInflater.from(thisRef.context), thisRef, true) as T
         } as T
         return binding!!
