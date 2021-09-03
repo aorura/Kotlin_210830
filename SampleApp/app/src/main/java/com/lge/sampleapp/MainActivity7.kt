@@ -14,8 +14,11 @@ import com.lge.sampleapp.databinding.MainActivity5Binding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableEmitter
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.Observables
+import io.reactivex.rxjava3.kotlin.addTo
+import io.reactivex.rxjava3.kotlin.plusAssign
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -129,11 +132,13 @@ class MainActivity7 : AppCompatActivity() {
         }
     }
 
-    var disposable: Disposable? = null
+    // var disposable: Disposable? = null
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onDestroy() {
         super.onDestroy()
-        disposable?.dispose()
+        // disposable?.dispose()
+        compositeDisposable.dispose()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -146,7 +151,7 @@ class MainActivity7 : AppCompatActivity() {
         // binding.loadButton.setOnClickListener(this::onLoadButtonClicked4)
 
         // 화면이 종료되는 시점에, 이벤트 스트림에 대한 종료 처리가 필요합니다.
-        disposable = binding.loadButton.clicks() // Observable<Unit>
+        compositeDisposable += binding.loadButton.clicks() // Observable<Unit>
             .throttleFirst(1, TimeUnit.SECONDS)
             // Observable<Unit> -> flatMap -> Observable<GithubUser>
             // .flatMap {
@@ -177,6 +182,9 @@ class MainActivity7 : AppCompatActivity() {
                 onComplete = {
                     Log.i(TAG, "onComplete")
                 })
+            // .addTo(compositeDisposable)
+
+        //compositeDisposable.add(disposable)
     }
 
     fun fetchUserRx(login: String): Observable<GithubUser> {
