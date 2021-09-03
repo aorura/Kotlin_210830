@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
-import com.google.gson.annotations.SerializedName
 import com.lge.sampleapp.databinding.MainActivity5Binding
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
