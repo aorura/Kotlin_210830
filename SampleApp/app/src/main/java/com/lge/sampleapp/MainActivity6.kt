@@ -25,6 +25,9 @@ import retrofit2.http.Query
 // => CONVERTERS
 //  implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
+// 3. 콜백이 UI 스레드에서 수행됩니다.
+// => runOnUiThread가 필요하지 않습니다.
+
 class SearchResponse
 
 // Retrofit 사용 방법
@@ -75,13 +78,11 @@ class MainActivity6 : AppCompatActivity() {
                         return
 
                     val user = response.body() ?: return
-                    runOnUiThread {
-                        Toast.makeText(
-                            this@MainActivity6,
-                            "Hello, ${user.name}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    Toast.makeText(
+                        this@MainActivity6,
+                        "Hello, ${user.name}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
                 override fun onFailure(
