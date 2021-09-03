@@ -6,14 +6,35 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.core.content.getSystemService
+import androidx.fragment.app.commit
+import com.lge.sampleapp.ListFragment2
+import com.lge.sampleapp.R
 
 // KTX - 코틀린 확장 함수 라이브러리 입니다.
+// : https://developer.android.com/kotlin/ktx/extensions-list?hl=ko
 // core-ktx
+// fragment-ktx
+//  :  implementation 'androidx.fragment:fragment-ktx:1.3.6'
 
 class MainActivity4 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.main_activity)
 
+        if (savedInstanceState == null) {
+            val fragment = ListFragment2()
+
+            // supportFragmentManager.beginTransaction()
+            //    .add(R.id.fragmentContainer, fragment)
+            //    .commit()
+
+            supportFragmentManager.commit {
+                add(R.id.fragmentContainer, fragment)
+            }
+        }
+
+
+        /*
         // NotificationManager
         // - getSystemService
         // val notificationManager: NotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
@@ -40,6 +61,7 @@ class MainActivity4 : AppCompatActivity() {
         sharedPref.edit {
             putBoolean("isEnable", isEnable)
         }
+        */
 
     }
 }
