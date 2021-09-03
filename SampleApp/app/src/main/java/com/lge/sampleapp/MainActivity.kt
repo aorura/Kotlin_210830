@@ -2,7 +2,6 @@ package com.lge.sampleapp
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.lge.sampleapp.databinding.ActivityMainBinding
@@ -36,10 +35,47 @@ import kotlinx.parcelize.Parcelize
 //   => fragment-ktx
 //      viewmodel-ktx
 
+// Kotlin에서 자바의 코드를 인식할 때
+//  -  String: @NonNull String
+//  - String?: @Nullable String
+//  - String!: String
+
+
 class MainActivity : AppCompatActivity() {
+
+    fun foo(): Int? {
+        return 42
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        /*
+        Integer n = null;
+        n.toLong()       // NullPointerException
+
+        val n: Int? = null
+        if (n != null) {
+            // ...
+        }
+
+        n!!.toLong()    // NullPointerException
+        */
+
+        // val n: Int? = 42
+        // n!!.toLong()
+
+        /*
+        val result2: Long? = if (n != null) {
+            n.toLong()
+        } else {
+            null
+        }
+        */
+
+        // val result: Long? = n?.let { it.toLong() }
+        // val result: Long? = n?.toLong()
+        // n이 null이면 결과도 null 입니다.
 
         // setContentView(R.layout.activity_main)
         // activity_main.xml -> ActivityMainBinding
@@ -52,9 +88,9 @@ class MainActivity : AppCompatActivity() {
         }
         */
 
-        with (binding) {
+        with(binding) {
             button.setOnClickListener {
-                textView.text = "Hello, Kotlin"
+                textView.text = getString(R.string.hello_kotlin)
             }
         }
 

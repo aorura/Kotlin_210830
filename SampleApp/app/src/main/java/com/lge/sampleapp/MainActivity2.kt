@@ -254,16 +254,18 @@ class UserListAdapter : RecyclerView.Adapter<UserItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(
-            R.layout.user_list_item, parent, false
-        )
 
         // * inflate + bind
         // val binding = UserListItemBinding.inflate(inflater, parent, false)
         // return UserItemViewHolder(binding)
 
         // * bind
+        val view = inflater.inflate(
+            R.layout.user_list_item, parent, false
+        )
         val binding = UserListItemBinding.bind(view)
+
+
         return UserItemViewHolder(binding)
     }
 

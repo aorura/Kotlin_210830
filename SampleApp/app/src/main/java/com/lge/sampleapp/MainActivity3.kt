@@ -96,7 +96,7 @@ class MainActivity3 : AppCompatActivity() {
 // FragmentViewBindingDelegate
 class FragmentViewBindingDelegate<T : ViewBinding>(
     private val bindingClass: Class<T>,
-    val fragment: Fragment
+    fragment: Fragment
 ) {
     private var binding: T? = null
 
