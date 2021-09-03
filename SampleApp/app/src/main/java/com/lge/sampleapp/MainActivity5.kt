@@ -16,9 +16,15 @@ import java.io.IOException
 // Github API
 // - https://api.github.com/users/JakeWharton
 
+// Request
 //    URL: 리소스 위치
 // METHOD: GET / POST / PUT / PATCH / DELETE
 
+// Response
+//   status code:
+//    - 200-299: 성공
+//    - 400-499: 클라이언트 오류
+//    - 500-599: 서버 오류
 
 // OKHttpClient
 // 의존성 추가
@@ -73,6 +79,18 @@ class MainActivity5 : AppCompatActivity() {
             // 4. 동기 수행
             try {
                 val response: Response = call.execute()
+
+                // val code = response.code
+                // if (code !in 200..299) {
+                //    return@setOnClickListener
+                // }
+
+                if (!response.isSuccessful) {
+                    return@setOnClickListener
+                }
+
+                val json = response.body?.string() ?: return@setOnClickListener
+                Log.i(TAG, "json: $json")
 
             } catch (e: IOException) {
                 // 서버에 접속할 수 없다.
