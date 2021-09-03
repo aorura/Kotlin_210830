@@ -3,6 +3,8 @@ package com.lge.sampleapp
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.lge.sampleapp.databinding.MainActivity5Binding
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 
 // REST API(HTTP API)
 // -> 서버로부터 데이터를 로드해서 화면에 보여주는 작업
@@ -28,6 +30,16 @@ class MainActivity5 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        binding.loadButton.setOnClickListener {
+            // 1. OKHttpClient 객체 생성
+            val loggingInterceptor = HttpLoggingInterceptor()
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+
+            val httpClient = OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .build()
+        }
 
     }
 }
