@@ -10,6 +10,7 @@ import coil.transform.GrayscaleTransformation
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import com.lge.sampleapp.databinding.MainActivity5Binding
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import retrofit2.Call
@@ -69,6 +70,7 @@ interface GithubApi {
     @GET("/users/{login}")
     fun fetchUser(@Path("login") login: String): Call<GithubUser>
 
+    @GET("/users/{login}")
     fun fetchUserRx(@Path("login") login: String): Observable<GithubUser>
 
     @GET("/search/users")
@@ -119,19 +121,20 @@ class MainActivity7 : AppCompatActivity() {
 
         // Observable에 구독이 일어나면, 이벤트 스트림이 형성되고, 데이터를 전달 받을 수 있습니다.
         // subscribeBy - RxKotlin
-        observable.subscribeBy(
-            onNext = {
-                Log.i(TAG, "onNext")
-            },
-            onError = {
-                Log.i(TAG, "onError")
-            },
-            onComplete = {
-                Log.i(TAG, "onComplete")
-            }
-        )
-
-
+        observable
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = { user ->
+                    Log.i(TAG, "onNext: $user")
+                    update(user)
+                },
+                onError = {
+                    Log.i(TAG, "onError")
+                },
+                onComplete = {
+                    Log.i(TAG, "onComplete")
+                }
+            )
     }
 }
 
