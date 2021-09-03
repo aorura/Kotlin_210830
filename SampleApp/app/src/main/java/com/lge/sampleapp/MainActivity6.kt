@@ -1,11 +1,15 @@
 package com.lge.sampleapp
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import com.lge.sampleapp.databinding.MainActivity5Binding
 import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -58,5 +62,48 @@ class MainActivity6 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        binding.loadButton.setOnClickListener {
+            val call: Call<GithubUser> = githubApi.fetchUser("JakeWharton")
+
+            call.enqueue(object : Callback<GithubUser> {
+                override fun onResponse(
+                    call: Call<GithubUser>,
+                    response: Response<GithubUser>
+                ) {
+                    if (!response.isSuccessful)
+                        return
+
+                    val user = response.body() ?: return
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@MainActivity6,
+                            "Hello, ${user.name}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<GithubUser>,
+                    t: Throwable
+                ) {
+                    Log.e(MainActivity5.TAG, e.localizedMessage, e)
+                }
+            })
+
+        }
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
