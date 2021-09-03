@@ -120,7 +120,8 @@ class MainActivity7 : AppCompatActivity() {
         val observable: Observable<GithubUser> = githubApi.fetchUserRx("JakeWharton")
 
         // Observable에 구독이 일어나면, 이벤트 스트림이 형성되고, 데이터를 전달 받을 수 있습니다.
-        // subscribeBy - RxKotlin
+        //                    subscribeBy - RxKotlin
+        // AndroidSchedulers.mainThread() - RxAndroid
         observable
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
