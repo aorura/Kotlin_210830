@@ -8,10 +8,7 @@ import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 import com.lge.sampleapp.databinding.MainActivity5Binding
-import okhttp3.Call
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
 
@@ -84,6 +81,39 @@ class MainActivity5 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        val httpClient = OkHttpClient.Builder().apply {
+            addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+        }.build()
+        val gson = GsonBuilder().apply {
+            setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+        }.create()
+
+        binding.loadButton.setOnClickListener {
+            val request = Request.Builder().apply {
+                url("https://api.github.com/users/JakeWharton")
+                get()
+            }.build()
+
+            val call: Call = httpClient.newCall(request)
+
+            // call.execute() : 동기
+            // call.enqueue() : 비동기 - 별도의 스레드에서 수행된다.
+            //    - 별도의 스레드에서 수행되는 결과를 콜백을 통해 처리합니다.
+            call.enqueue(object: Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.e(TAG, e.localizedMessage, e)
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+
+                }
+            })
+        }
+
+
+        /*
         binding.loadButton.setOnClickListener {
             // 1. OKHttpClient 객체 생성
             /*
@@ -155,9 +185,8 @@ class MainActivity5 : AppCompatActivity() {
                     Log.e(TAG, e.localizedMessage, e)
                 }
             }.start()
-
-
         }
+        */
 
     }
 }
